@@ -1,0 +1,334 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#f3f5f9" />
+    <meta name="color-scheme" content="light dark" />
+    <meta name="description" content="Artificial intelligence generates possibilities. Engineering generates guarantees. A manifesto on evidence, human accountability and trustworthy software." />
+    <title>Manifesto for Software Engineering in the Age of Artificial Intelligence</title>
+    <script type="application/json" id="lang-map">{"href":"/","ids":{"inicio":"inicio","preamble":"preambulo","our-vision":"nuestra-vision","our-values":"nuestros-valores","principles":"principios","engineering-commitments":"compromisos-de-ingenieria","warning-signs":"senales-de-alarma","how-we-will-recognize-healthy-engineering":"como-reconoceremos-una-ingenieria-saludable","final-declaration":"declaracion-final","1-accountability-cannot-be-delegated":"1-la-responsabilidad-no-se-delega","2-tests-are-a-fundamental-source-of-operational-truth":"2-el-test-es-una-fuente-fundamental-de-verdad-operacional","3-tests-are-contracts-not-targets-to-be-bent":"3-los-tests-son-contratos-no-objetivos-que-deban-doblegarse","4-guardrails-are-part-of-the-goal":"4-los-guardarrailes-forman-parte-del-objetivo","5-validating-is-as-important-as-building":"5-validar-es-tan-importante-como-construir","6-speed-does-not-justify-the-absence-of-evidence":"6-la-velocidad-no-justifica-la-ausencia-de-evidencia","7-every-ai-assisted-system-must-be-observable":"7-todo-sistema-asistido-por-ia-debe-ser-observable","8-we-measure-the-whole-system-not-just-output":"8-medimos-el-sistema-completo-no-solo-la-produccion","9-we-must-detect-divergence-before-damage":"9-debemos-detectar-la-divergencia-antes-que-el-dano","10-every-ai-generated-result-is-a-hypothesis-until-it-is-validated":"10-todo-resultado-generado-por-ia-es-una-hipotesis-hasta-que-se-valida","11-the-independence-of-validation-must-be-preserved":"11-la-independencia-de-la-validacion-debe-preservarse","12-our-governance-must-evolve-with-the-evidence":"12-nuestra-gobernanza-debe-evolucionar-con-la-evidencia"}}</script>
+    <script>
+      // Picks the language before first paint: saved choice, else browser language (Spanish → es, anything else → en).
+      (() => {
+        const current = document.documentElement.lang;
+        let lang;
+        try { lang = localStorage.getItem('manifiesto-idioma'); } catch { /* storage unavailable */ }
+        if (lang !== 'es' && lang !== 'en') lang = /^es\b/i.test((navigator.languages && navigator.languages[0]) || navigator.language || '') ? 'es' : 'en';
+        if (lang === current) return;
+        const map = JSON.parse(document.getElementById('lang-map').textContent);
+        const id = map.ids[decodeURIComponent(location.hash.slice(1))];
+        location.replace(map.href + (id ? `#${id}` : ''));
+      })();
+    </script>
+    <script>
+      // Applied before first paint to avoid a flash of the wrong theme.
+      (() => {
+        let theme;
+        try { theme = localStorage.getItem('manifiesto-tema'); } catch { /* storage unavailable */ }
+        if (theme !== 'light' && theme !== 'dark') theme = matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+        document.documentElement.dataset.theme = theme;
+        document.querySelector('meta[name="theme-color"]').content = theme === 'dark' ? '#10141a' : '#f3f5f9';
+      })();
+    </script>
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="stylesheet" href="/src/style.css" />
+  </head>
+  <body>
+    <a class="skip-link" href="#preamble">Skip to the manifesto</a>
+    <div class="reading-progress" role="progressbar" aria-label="Reading progress" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><span></span></div>
+    <div class="toolbar">
+      <nav class="lang-switch" aria-label="Language"><a href="/" hreflang="es" lang="es" data-lang="es"><span aria-hidden="true">ES</span><span class="sr-only">Español</span></a><a href="/en/" hreflang="en" lang="en" data-lang="en" aria-current="true"><span aria-hidden="true">EN</span><span class="sr-only">English</span></a></nav>
+      <button class="toolbar-button index-toggle" type="button" aria-haspopup="dialog" aria-controls="chapter-index" data-open-index hidden>Index <span class="menu-icon" aria-hidden="true"><i></i><i></i></span></button>
+      <button class="toolbar-button mode-toggle" type="button" data-mode-toggle hidden aria-label="Switch to dark mode" data-label-dark="Dark" data-label-light="Light" data-aria-dark="Switch to dark mode" data-aria-light="Switch to light mode">
+        <svg class="icon icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 13A9 9 0 1 1 11 3a7 7 0 0 0 10 10Z"/></svg>
+        <svg class="icon icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>
+        <span class="mode-label">Dark</span>
+      </button>
+    </div>
+
+    <main id="contenido">
+      <section id="inicio" class="hero" data-contrast aria-labelledby="manifesto-title">
+        <div class="hero-inner">
+          <h1 class="hero-kicker" id="manifesto-title">Manifesto for Software Engineering in the Age of Artificial Intelligence</h1>
+          <p class="hero-heading">AI generates <em>possibilities</em>.<br />Engineering generates <mark>guarantees</mark>.</p>
+          <p class="hero-description">It is not about generating more software. It is about building trustworthy software.</p>
+        </div>
+        <nav class="hero-toc" aria-label="Manifesto sections"><a href="#preamble" data-chapter-link="preamble"><span>01</span> Preamble</a><a href="#our-vision" data-chapter-link="our-vision"><span>02</span> Our vision</a><a href="#our-values" data-chapter-link="our-values"><span>03</span> Our values</a><a href="#principles" data-chapter-link="principles"><span>04</span> Principles</a><a href="#engineering-commitments" data-chapter-link="engineering-commitments"><span>05</span> Engineering commitments</a><a href="#warning-signs" data-chapter-link="warning-signs"><span>06</span> Warning signs ↔ Healthy engineering</a><a href="#final-declaration" data-chapter-link="final-declaration"><span>07</span> Final declaration</a></nav>
+      </section>
+      <div id="manifesto-content"><section class="section preamble" id="preamble" aria-labelledby="preamble-title">
+    <header class="section-head"><span class="section-tag">01</span><h2 id="preamble-title" tabindex="-1">Preamble</h2></header>
+    <div class="preamble-layout">
+      <div class="prose-columns"><p>Artificial intelligence has transformed software engineering. In a very short time, the capability of models and agents has grown, their cost has fallen and their use has spread to every level of our profession. Today we can produce code, documentation, designs and technical decisions at a speed that barely a year ago seemed out of reach.</p>
+<p>This capability opens an extraordinary opportunity. We must use artificial intelligence, innovate with it and build new ways of working. But we must do so by building on the foundations that software engineering has developed over decades, not by replacing them.</p>
+<p><strong>The ability to generate software is growing faster than our ability to understand, validate and govern it</strong>. The pressure to innovate, reach the market first and outperform our competitors pushes us to produce and integrate changes ever more quickly. In that process we run the risk of trusting results we have not reviewed, deploying code we do not understand and accepting as true artifacts produced by probabilistic systems.</p>
+<p>The problem is not artificial intelligence. The problem arises when we delegate to it responsibilities that still belong to engineering professionals.</p>
+<p>This manifesto exists to preserve and strengthen those responsibilities. It does not seek to slow innovation, but to give it foundations. It does not reject speed, but speed without control. It does not distrust the tool on principle, but any result that is not backed by evidence.</p>
+</div>
+      <aside class="pull-quote" aria-label="Highlighted quote"><blockquote>
+<p><strong>Artificial intelligence generates possibilities. Engineering generates guarantees.</strong></p>
+</blockquote>
+</aside>
+    </div>
+  </section>
+<section class="section vision" id="our-vision" aria-labelledby="our-vision-title">
+    <header class="section-head"><span class="section-tag">02</span><h2 id="our-vision-title" tabindex="-1">Our vision</h2></header>
+    <ol class="steps"><li data-step="01">We want a software engineering in which artificial intelligence amplifies human capability without replacing judgment, accountability or professional discipline.</li><li data-step="02">We want to build systems that are reliable, secure, understandable, maintainable and observable. Systems whose behavior can be demonstrated and whose changes can be traced, evaluated and revoked.</li><li data-step="03">Artificial intelligence can take part in building software. Intent, acceptance criteria and accountability for the outcome must remain under human governance.</li></ol>
+  </section>
+<section class="section values" id="our-values" aria-labelledby="our-values-title">
+    <header class="section-head"><span class="section-tag">03</span><h2 id="our-values-title" tabindex="-1">Our values</h2><div class="carousel-nav"><button type="button" class="carousel-button" data-carousel-dir="-1" aria-label="Previous value" aria-controls="values-track"><span aria-hidden="true">←</span></button><button type="button" class="carousel-button" data-carousel-dir="1" aria-label="Next value" aria-controls="values-track"><span aria-hidden="true">→</span></button></div></header>
+    <div class="values-track" id="values-track" role="region" aria-label="Values. Horizontal scrolling" tabindex="0"><article class="value-card" aria-labelledby="valor-1">
+        <span class="icon-box"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7S2 12 2 12Z"/><circle cx="12" cy="12" r="3"/></svg></span>
+        <h3 class="versus" id="valor-1"><strong>Evidence</strong> <span class="versus-label"><span class="sr-only">over</span><span aria-hidden="true">over</span></span> <s>apparent confidence</s></h3>
+        <p>The coherence of an answer does not prove its truthfulness. The apparent quality of an artifact does not prove its correctness. We accept results because there is evidence that supports them, not because they have been presented convincingly.</p>
+
+      </article><article class="value-card" aria-labelledby="valor-2">
+        <span class="icon-box"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 3.6-7 8-7s8 3 8 7"/></svg></span>
+        <h3 class="versus" id="valor-2"><strong>Human accountability</strong> <span class="versus-label"><span class="sr-only">over</span><span aria-hidden="true">over</span></span> <s>artificial autonomy</s></h3>
+        <p>Artificial intelligence can propose, implement and assist. Final accountability for what is built, integrated and deployed belongs to the people and organizations that choose to use it.</p>
+
+      </article><article class="value-card" aria-labelledby="valor-3">
+        <span class="icon-box"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 3a3 3 0 0 0-3 3 3 3 0 0 0-2 5 3 3 0 0 0 2 5 3 3 0 0 0 3 3h1V3H9Zm6 0a3 3 0 0 1 3 3 3 3 0 0 1 2 5 3 3 0 0 1-2 5 3 3 0 0 1-3 3h-1V3h1Z"/></svg></span>
+        <h3 class="versus" id="valor-3"><strong>Understanding</strong> <span class="versus-label"><span class="sr-only">over</span><span aria-hidden="true">over</span></span> <s>thoughtless production</s></h3>
+        <p>We do not integrate what we cannot sufficiently explain. The ability to produce more code does not remove the need to understand its purpose, its effects, its limits and its risks.</p>
+
+      </article><article class="value-card" aria-labelledby="valor-4">
+        <span class="icon-box"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 12.5 9 17.5 20 6.5"/></svg></span>
+        <h3 class="versus" id="valor-4"><strong>Validation</strong> <span class="versus-label"><span class="sr-only">over</span><span aria-hidden="true">over</span></span> <s>uncontrolled speed</s></h3>
+        <p>Delivering sooner only has value when what we deliver fulfills its purpose. Competitive pressure may explain a decision, but it can never justify the absence of validation.</p>
+
+      </article><article class="value-card" aria-labelledby="valor-5">
+        <span class="icon-box"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 2 4 5v6c0 5 3.4 9.4 8 11 4.6-1.6 8-6 8-11V5l-8-3Z"/><path d="m9 12 2 2 4-4"/></svg></span>
+        <h3 class="versus" id="valor-5"><strong>Discipline</strong> <span class="versus-label"><span class="sr-only">over</span><span aria-hidden="true">over</span></span> <s>convenience</s></h3>
+        <p>Standards, controls and guardrails are not obstacles to be removed in order to complete a task. They are necessary conditions for the result to be trustworthy.</p>
+
+      </article><article class="value-card" aria-labelledby="valor-6">
+        <span class="icon-box"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><path d="M12 12 19 5"/></svg></span>
+        <h3 class="versus" id="valor-6"><strong>Observability</strong> <span class="versus-label"><span class="sr-only">over</span><span aria-hidden="true">over</span></span> <s>opacity</s></h3>
+        <p>We cannot govern what we cannot observe. Every system assisted by artificial intelligence must let us know what it did, what it produced, what it changed and when it drifted from our intent.</p>
+
+      </article><article class="value-card" aria-labelledby="valor-7">
+        <span class="icon-box"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 21v-9"/><path d="M12 12C12 7 8 4 3 4c0 5 4 8 9 8Zm0 0c0-4 3-7 9-7 0 5-4 7-9 7Z"/></svg></span>
+        <h3 class="versus" id="valor-7"><strong>Learning</strong> <span class="versus-label"><span class="sr-only">over</span><span aria-hidden="true">over</span></span> <s>false maturity</s></h3>
+        <p>We are still learning to integrate and govern artificial intelligence. We act with humility, measure our results and revise our practices based on evidence.</p>
+
+      </article></div>
+  </section>
+<section class="principles" id="principles" aria-labelledby="principles-title" data-principles>
+    <div class="principles-track">
+      <div class="principles-intro"><header class="section-head"><span class="section-tag">04</span><h2 id="principles-title" tabindex="-1">Principles</h2></header><div class="principles-hint">12 fundamentals. <span class="hint-pinned">Keep scrolling: they move horizontally.</span><span class="hint-swipe">Swipe to browse them.</span></div></div>
+      <article class="principle-card" id="1-accountability-cannot-be-delegated" aria-labelledby="1-accountability-cannot-be-delegated-title">
+          <span class="principle-number" data-number="01" aria-hidden="true"></span>
+          <svg class="icon icon-mid" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 3.6-7 8-7s8 3 8 7"/></svg>
+          <h3 id="1-accountability-cannot-be-delegated-title"><span class="sr-only">1. </span>Accountability cannot be delegated</h3>
+          <blockquote>
+<p><strong>AI can generate code. Accountability for that code remains human.</strong></p>
+</blockquote>
+
+          <p>Artificial intelligence can generate an implementation, but it cannot bear its consequences. The decision to accept, integrate and deploy a change remains human.</p>
+
+          
+          <details><summary>Read the full principle</summary><p>Every contribution generated or modified through artificial intelligence must have identifiable accountability. Using an agent does not dilute ownership of the result, nor does it turn the agent&#39;s behavior into a justification.</p>
+</details>
+        </article><article class="principle-card" id="2-tests-are-a-fundamental-source-of-operational-truth" aria-labelledby="2-tests-are-a-fundamental-source-of-operational-truth-title">
+          <span class="principle-number" data-number="02" aria-hidden="true"></span>
+          <svg class="icon icon-mid" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 3h6M10 3v6L4 19a2 2 0 0 0 2 3h12a2 2 0 0 0 2-3l-6-10V3"/><path d="M7 15h10"/></svg>
+          <h3 id="2-tests-are-a-fundamental-source-of-operational-truth-title"><span class="sr-only">2. </span>Tests are a fundamental source of operational truth</h3>
+          <blockquote>
+<p><strong>It is not the agent that proves the software works. It is the evidence produced by validation.</strong></p>
+</blockquote>
+
+          <p>Generative models are probabilistic. The software we deliver must provide controlled, predictable and verifiable behavior.</p>
+
+          
+          <details><summary>Read the full principle</summary><p>An agent may claim that an implementation works, but that claim is not evidence. It is executable, reproducible tests linked to the acceptance criteria that demonstrate whether the expected behavior is met.</p>
+<p>Tests do not eliminate every risk, nor do they prove the absolute absence of defects. They do provide deterministic evidence about the behaviors they verify and allow regressions to be detected repeatably.</p>
+</details>
+        </article><article class="principle-card" id="3-tests-are-contracts-not-targets-to-be-bent" aria-labelledby="3-tests-are-contracts-not-targets-to-be-bent-title">
+          <span class="principle-number" data-number="03" aria-hidden="true"></span>
+          <svg class="icon icon-mid" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 2h9l5 5v15H6Z"/><path d="M14 2v6h6"/></svg>
+          <h3 id="3-tests-are-contracts-not-targets-to-be-bent-title"><span class="sr-only">3. </span>Tests are contracts, not targets to be bent</h3>
+          <blockquote>
+<p><strong>The test judges the agent. The agent does not judge the test.</strong></p>
+</blockquote>
+
+          <p>Tests represent part of the intent of the product and of the engineering team. An agent tasked with implementing a change must not unilaterally redefine the criteria by which that change will be evaluated.</p>
+
+          
+          <details><summary>Read the full principle</summary><p>An agent must not delete, weaken, skip or alter the purpose of a test in order to get its implementation accepted. It may only modify a test when there is an explicit human instruction, an understood reason and a review proportionate to the risk.</p>
+<p>When implementation and validation change at the same time, both changes must be reviewed independently and show that the contract is evolving deliberately, not that a failure is being covered up.</p>
+</details>
+        </article><article class="principle-card" id="4-guardrails-are-part-of-the-goal" aria-labelledby="4-guardrails-are-part-of-the-goal-title">
+          <span class="principle-number" data-number="04" aria-hidden="true"></span>
+          <svg class="icon icon-mid" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 2 4 5v6c0 5 3.4 9.4 8 11 4.6-1.6 8-6 8-11V5l-8-3Z"/><path d="m9 12 2 2 4-4"/></svg>
+          <h3 id="4-guardrails-are-part-of-the-goal-title"><span class="sr-only">4. </span>Guardrails are part of the goal</h3>
+          <blockquote>
+<p><strong>A result that requires destroying its controls is not a valid result.</strong></p>
+</blockquote>
+
+          <p>Security policies, architectural rules, access controls, operational limits, regulatory requirements and quality thresholds are not impediments external to the task. They are part of its definition.</p>
+
+          
+          <details><summary>Read the full principle</summary><p>An agent must not disable controls, expand its own permissions, ignore restrictions or modify protection mechanisms in order to achieve a result. Any exception must be explicit, traceable, limited and authorized by a person with the appropriate accountability.</p>
+</details>
+        </article><article class="principle-card" id="5-validating-is-as-important-as-building" aria-labelledby="5-validating-is-as-important-as-building-title">
+          <span class="principle-number" data-number="05" aria-hidden="true"></span>
+          <svg class="icon icon-mid" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 12.5 9 17.5 20 6.5"/></svg>
+          <h3 id="5-validating-is-as-important-as-building-title"><span class="sr-only">5. </span>Validating is as important as building</h3>
+          <blockquote>
+<p><strong>Software that has not been validated is not finished.</strong></p>
+</blockquote>
+
+          <p>Implementation creates capability. Validation creates trust. No feature is finished merely because the code exists, compiles or was generated quickly.</p>
+
+          
+          <details><summary>Read the full principle</summary><p>Investment in testing frameworks, evaluation environments, test data, observability and control automation must grow at the same pace as our generation capability. If we multiply the volume of changes without expanding our ability to evaluate them, we have not increased our productivity: we have accumulated risk faster.</p>
+</details>
+        </article><article class="principle-card" id="6-speed-does-not-justify-the-absence-of-evidence" aria-labelledby="6-speed-does-not-justify-the-absence-of-evidence-title">
+          <span class="principle-number" data-number="06" aria-hidden="true"></span>
+          <svg class="icon icon-mid" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 15a9 9 0 0 1 18 0"/><path d="m12 15 5-5"/></svg>
+          <h3 id="6-speed-does-not-justify-the-absence-of-evidence-title"><span class="sr-only">6. </span>Speed does not justify the absence of evidence</h3>
+          <blockquote>
+<p><strong>Speed without evidence is not engineering; it is unacknowledged risk.</strong></p>
+</blockquote>
+
+          <p>Competing, innovating and reaching the market first are legitimate needs. None of them breaks our commitment to the people who will use the software.</p>
+
+          
+          <details><summary>Read the full principle</summary><p>We do not consider it a success to quickly deliver a system we do not understand, cannot control or have not tested in proportion to its risk. Sustainable speed includes the time needed to define criteria, verify behavior, review results and prepare recovery from failure.</p>
+</details>
+        </article><article class="principle-card" id="7-every-ai-assisted-system-must-be-observable" aria-labelledby="7-every-ai-assisted-system-must-be-observable-title">
+          <span class="principle-number" data-number="07" aria-hidden="true"></span>
+          <svg class="icon icon-mid" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7S2 12 2 12Z"/><circle cx="12" cy="12" r="3"/></svg>
+          <h3 id="7-every-ai-assisted-system-must-be-observable-title"><span class="sr-only">7. </span>Every AI-assisted system must be observable</h3>
+          <blockquote>
+<p><strong>We cannot govern what we cannot observe.</strong></p>
+</blockquote>
+
+          <p>We must be able to reconstruct the involvement of artificial intelligence in the development lifecycle. At a minimum, we must know the requested goal, the relevant context, the artifacts created or modified, the validations executed, their results and the human acceptance decisions.</p>
+
+          
+          <details><summary>Read the full principle</summary><p>Traceability must be proportionate to impact. The greater an agent&#39;s autonomy, scope or risk, the greater our ability must be to audit it, limit it, stop it and revert its actions.</p>
+</details>
+        </article><article class="principle-card" id="8-we-measure-the-whole-system-not-just-output" aria-labelledby="8-we-measure-the-whole-system-not-just-output-title">
+          <span class="principle-number" data-number="08" aria-hidden="true"></span>
+          <svg class="icon icon-mid" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/></svg>
+          <h3 id="8-we-measure-the-whole-system-not-just-output-title"><span class="sr-only">8. </span>We measure the whole system, not just output</h3>
+          
+          <p>Lines of code, the number of pull requests or the time it takes to generate a solution are not enough to assess the value of artificial intelligence.</p>
+
+          
+          <details><summary>Read the full principle</summary><p>We must jointly measure:</p>
+<ul>
+<li>the quality, security, performance and maintainability of the software;</li>
+<li>the ability of tests to detect defects and regressions;</li>
+<li>the stability and usefulness of evaluations;</li>
+<li>the acceptance and correction rate of the agent&#39;s proposals;</li>
+<li>defects introduced, escaped and reopened;</li>
+<li>the economic and operational cost of the assistance;</li>
+<li>the human time spent understanding, correcting and validating;</li>
+<li>how often the agent attempts to alter tests, controls or scope;</li>
+<li>the ability to detect, stop and revert a divergence.</li>
+</ul>
+<p>Metrics must help us decide, not decorate an adoption that has already been decided. A local improvement in speed does not make up for a global degradation in quality or in our ability to control.</p>
+</details>
+        </article><article class="principle-card" id="9-we-must-detect-divergence-before-damage" aria-labelledby="9-we-must-detect-divergence-before-damage-title">
+          <span class="principle-number" data-number="09" aria-hidden="true"></span>
+          <svg class="icon icon-mid" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><path d="M12 12 19 5"/></svg>
+          <h3 id="9-we-must-detect-divergence-before-damage-title"><span class="sr-only">9. </span>We must detect divergence before damage</h3>
+          <blockquote>
+<p><strong>We must detect divergence before we suffer its consequences.</strong></p>
+</blockquote>
+
+          <p>We do not merely wait for software to fail. We watch for when the agent begins to drift from the original intent, expands the scope, introduces unauthorized assumptions, modifies contracts or takes shortcuts incompatible with our standards.</p>
+
+          
+          <details><summary>Read the full principle</summary><p>Our systems must make it possible to pause, revoke and revert decisions before they spread. The ability to recover is not a measure taken after failure, but a property of the design.</p>
+</details>
+        </article><article class="principle-card" id="10-every-ai-generated-result-is-a-hypothesis-until-it-is-validated" aria-labelledby="10-every-ai-generated-result-is-a-hypothesis-until-it-is-validated-title">
+          <span class="principle-number" data-number="10" aria-hidden="true"></span>
+          <svg class="icon icon-mid" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 18h6M10 22h4M12 2a7 7 0 0 0-4 12.7V17h8v-2.3A7 7 0 0 0 12 2Z"/></svg>
+          <h3 id="10-every-ai-generated-result-is-a-hypothesis-until-it-is-validated-title"><span class="sr-only">10. </span>Every AI-generated result is a hypothesis until it is validated</h3>
+          <blockquote>
+<p><strong>What AI generates is not evidence. It is a claim that needs evidence.</strong></p>
+</blockquote>
+
+          <p>Code, tests, documentation, diagrams, specifications, analyses and recommendations share the same condition when they are produced by a generative model: they are not sources of truth in themselves.</p>
+
+          
+          <details><summary>Read the full principle</summary><p>Each artifact must be validated through the appropriate mechanism. Whenever possible, we will use deterministic tests, schemas, compilers, linters, static analyzers, security checks and executable rules. When the nature of the artifact does not allow complete deterministic validation, we will require expert review, cross-checking against authoritative sources, traceability and an explicit statement of uncertainty.</p>
+<p>A single answer from a model can be useful as a starting point. It must never become truth merely because it was generated, or because it looks correct.</p>
+</details>
+        </article><article class="principle-card" id="11-the-independence-of-validation-must-be-preserved" aria-labelledby="11-the-independence-of-validation-must-be-preserved-title">
+          <span class="principle-number" data-number="11" aria-hidden="true"></span>
+          <svg class="icon icon-mid" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 3v6a6 6 0 0 0 6 6h0a6 6 0 0 1 6 6M18 3v6a6 6 0 0 1-6 6"/></svg>
+          <h3 id="11-the-independence-of-validation-must-be-preserved-title"><span class="sr-only">11. </span>The independence of validation must be preserved</h3>
+          
+          <p>Whoever produces a solution must not control, without oversight, the mechanisms that determine its acceptance. This principle, known for decades in critical systems, becomes even more important when an agent can simultaneously modify implementation, tests, configuration and documentation.</p>
+
+          
+          <details><summary>Read the full principle</summary><p>To the extent the risk allows, we will separate generation from evaluation; proposal from approval; and execution from authorization. When complete separation is not possible, we will apply compensating controls, human review and reinforced traceability.</p>
+</details>
+        </article><article class="principle-card" id="12-our-governance-must-evolve-with-the-evidence" aria-labelledby="12-our-governance-must-evolve-with-the-evidence-title">
+          <span class="principle-number" data-number="12" aria-hidden="true"></span>
+          <svg class="icon icon-mid" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M17 2l4 4-4 4"/><path d="M3 12V10a4 4 0 0 1 4-4h14M7 22l-4-4 4-4"/><path d="M21 12v2a4 4 0 0 1-4 4H3"/></svg>
+          <h3 id="12-our-governance-must-evolve-with-the-evidence-title"><span class="sr-only">12. </span>Our governance must evolve with the evidence</h3>
+          
+          <p>We are at an early stage. No organization should assume it has already definitively solved the integration of artificial intelligence into software engineering.</p>
+
+          
+          <details><summary>Read the full principle</summary><p>We will define explicit frameworks for action, learn from their use and review them periodically. We will increase autonomy only when the data show that our validation, observability and recovery systems can sustain it.</p>
+<p>Trust is not granted all at once. It is built gradually and can be revoked.</p>
+</details>
+        </article>
+    </div>
+  </section>
+<section class="section commitments" id="engineering-commitments" aria-labelledby="engineering-commitments-title">
+    <header class="section-head"><span class="section-tag">05</span><h2 id="engineering-commitments-title" tabindex="-1">Engineering commitments</h2></header>
+    <p class="lede">To turn these principles into a real way of working, we commit to:</p>
+
+    <ol class="commitment-grid"><li><svg class="icon icon-mid" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1"/></svg><strong class="commitment-title">Define intent before delegating.</strong> <span>State acceptance criteria, constraints and limits before asking an agent to act.</span></li><li><svg class="icon icon-mid" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 3.6-7 8-7s8 3 8 7"/></svg><strong class="commitment-title">Keep a person accountable.</strong> <span>Identify who accepts each change and who answers for its consequences.</span></li><li><svg class="icon icon-mid" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="10" width="16" height="11" rx="2"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/></svg><strong class="commitment-title">Protect tests and controls.</strong> <span>Require explicit authorization and review for any modification of validation mechanisms.</span></li><li><svg class="icon icon-mid" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 3v6a6 6 0 0 0 6 6h0a6 6 0 0 1 6 6M18 3v6a6 6 0 0 1-6 6"/></svg><strong class="commitment-title">Separate implementation and acceptance.</strong> <span>Prevent the same agent from generating, modifying and approving its own evidence without independent control.</span></li><li><svg class="icon icon-mid" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="8" cy="15" r="4"/><path d="m11 12 9-9m-3 3 3 3"/></svg><strong class="commitment-title">Apply least privilege.</strong> <span>Grant each agent only the capabilities, tools, data and access duration it needs.</span></li><li><svg class="icon icon-mid" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 15a9 9 0 0 1 18 0"/><path d="m12 15 5-5"/></svg><strong class="commitment-title">Validate according to risk.</strong> <span>Increase the depth of testing and review as impact, autonomy or irreversibility increase.</span></li><li><svg class="icon icon-mid" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 3h10l4 4v14H5Z"/><path d="M9 11h6M9 15h6M9 7h3"/></svg><strong class="commitment-title">Record relevant actions.</strong> <span>Keep the traceability needed to understand, audit and reproduce changes.</span></li><li><svg class="icon icon-mid" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/></svg><strong class="commitment-title">Measure quality, not just speed.</strong> <span>Evaluate defects, regressions, maintainability, security, review cost and outcomes for the user.</span></li><li><svg class="icon icon-mid" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 14 4 9l5-5"/><path d="M4 9h11a5 5 0 0 1 0 10h-3"/></svg><strong class="commitment-title">Prepare for revocation.</strong> <span>Design mechanisms to stop agents, revert changes and restore service.</span></li><li><svg class="icon icon-mid" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 18h6M10 22h4M12 2a7 7 0 0 0-4 12.7V17h8v-2.3A7 7 0 0 0 12 2Z"/></svg><strong class="commitment-title">Treat outputs as proposals.</strong> <span>Do not turn generated code, documentation, diagrams or decisions into sources of truth without adequate validation.</span></li><li><svg class="icon icon-mid" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M17 2l4 4-4 4"/><path d="M3 12V10a4 4 0 0 1 4-4h14M7 22l-4-4 4-4"/><path d="M21 12v2a4 4 0 0 1-4 4H3"/></svg><strong class="commitment-title">Continuously review the framework.</strong> <span>Adapt policies, tests, metrics and permissions based on incidents, data and learning.</span></li><li><svg class="icon icon-mid" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="m15.5 8.5-2 5-5 2 2-5 5-2Z"/></svg><strong class="commitment-title">Preserve professional judgment.</strong> <span>Use artificial intelligence to expand our capability, never as an excuse to give up understanding and deciding.</span></li></ol>
+  </section>
+<section class="section pairs" id="warning-signs" aria-labelledby="warning-signs-title how-we-will-recognize-healthy-engineering-title">
+    <header class="section-head"><span class="section-tag">06</span><span class="section-title" aria-hidden="true">Warning signs <span class="pairs-arrow">↔</span> Healthy engineering</span></header>
+    <div class="pairs-intro"><div class="bad-text"><p>We consider the following to be signs of irresponsible adoption:</p>
+</div><div class="good-text"><p>We will know we are moving in the right direction when:</p>
+</div></div>
+    <div class="pairs-head">
+      <h2 class="bad-text" id="warning-signs-title" tabindex="-1"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3 2 20h20L12 3Z"/><path d="M12 10v4M12 17v.5"/></svg>Warning signs</h2>
+      <h2 class="good-text" id="how-we-will-recognize-healthy-engineering" tabindex="-1"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 12.5 9 17.5 20 6.5"/></svg><span>How we will recognize healthy engineering</span></h2>
+    </div>
+    <div class="pairs-grid">
+      <ul class="pair-list pair-list-bad" aria-labelledby="warning-signs-title"><li class="pair-bad" style="--row: 1"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="6" cy="5" r="2"/><circle cx="6" cy="19" r="2"/><circle cx="18" cy="19" r="2"/><path d="M6 7v10M18 17V9a3 3 0 0 0-3-3h-4"/></svg><span>merging AI-generated pull requests without a review proportionate to the risk;</span></li><li class="pair-bad" style="--row: 2"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 3h6M10 3v6L4 19a2 2 0 0 0 2 3h12a2 2 0 0 0 2-3l-6-10V3"/><path d="M7 15h10"/></svg><span>accepting tests modified solely to make an implementation pass;</span></li><li class="pair-bad" style="--row: 3"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 2 4 5v6c0 5 3.4 9.4 8 11 4.6-1.6 8-6 8-11V5l-8-3Z"/><path d="m9 12 2 2 4-4"/></svg><span>allowing an agent to disable linters, security controls or access policies;</span></li><li class="pair-bad" style="--row: 4"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/></svg><span>measuring success only by volume of code, number of changes or reduction in implementation time;</span></li><li class="pair-bad" style="--row: 5"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 3a3 3 0 0 0-3 3 3 3 0 0 0-2 5 3 3 0 0 0 2 5 3 3 0 0 0 3 3h1V3H9Zm6 0a3 3 0 0 1 3 3 3 3 0 0 1 2 5 3 3 0 0 1-2 5 3 3 0 0 1-3 3h-1V3h1Z"/></svg><span>deploying artifacts that no one on the team can explain;</span></li><li class="pair-bad" style="--row: 6"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 2h9l5 5v15H6Z"/><path d="M14 2v6h6"/></svg><span>using generated documentation as a source of truth without cross-checking it;</span></li><li class="pair-bad" style="--row: 7"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="8" cy="15" r="4"/><path d="m11 12 9-9m-3 3 3 3"/></svg><span>expanding autonomy without having auditing, limits and revocation mechanisms in place;</span></li><li class="pair-bad" style="--row: 8"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7S2 12 2 12Z"/><circle cx="12" cy="12" r="3"/></svg><span>treating the appearance of correctness as evidence;</span></li><li class="pair-bad" style="--row: 9"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3 2 20h20L12 3Z"/><path d="M12 10v4M12 17v.5"/></svg><span>normalizing avoidable failures on the grounds that “the AI did it”;</span></li><li class="pair-bad" style="--row: 10"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 15a9 9 0 0 1 18 0"/><path d="m12 15 5-5"/></svg><span>increasing production capacity without increasing validation capacity.</span></li></ul>
+      <span class="pair-arrow" style="--row: 1" aria-hidden="true">→</span><span class="pair-arrow" style="--row: 2" aria-hidden="true">→</span><span class="pair-arrow" style="--row: 3" aria-hidden="true">→</span><span class="pair-arrow" style="--row: 4" aria-hidden="true">→</span><span class="pair-arrow" style="--row: 5" aria-hidden="true">→</span><span class="pair-arrow" style="--row: 6" aria-hidden="true">→</span><span class="pair-arrow" style="--row: 7" aria-hidden="true">→</span><span class="pair-arrow" style="--row: 8" aria-hidden="true">→</span><span class="pair-arrow" style="--row: 9" aria-hidden="true">→</span><span class="pair-arrow" style="--row: 10" aria-hidden="true">→</span>
+      <ul class="pair-list pair-list-good" aria-labelledby="how-we-will-recognize-healthy-engineering"><li class="pair-good" style="--row: 1"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 12.5 9 17.5 20 6.5"/></svg><span>every change has understandable acceptance criteria and associated evidence;</span></li><li class="pair-good" style="--row: 2"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 12.5 9 17.5 20 6.5"/></svg><span>tests fail in the face of real defects and are not adapted to hide them;</span></li><li class="pair-good" style="--row: 3"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 12.5 9 17.5 20 6.5"/></svg><span>changes to contracts and guardrails are explicit and traceable;</span></li><li class="pair-good" style="--row: 4"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 12.5 9 17.5 20 6.5"/></svg><span>we can reconstruct what an agent did and why its result was accepted;</span></li><li class="pair-good" style="--row: 5"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 12.5 9 17.5 20 6.5"/></svg><span>we know the rate of defects, corrections and regressions associated with the use of AI;</span></li><li class="pair-good" style="--row: 6"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 12.5 9 17.5 20 6.5"/></svg><span>we can stop or revert an action without depending on the agent itself;</span></li><li class="pair-good" style="--row: 7"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 12.5 9 17.5 20 6.5"/></svg><span>quality and maintainability improve along with speed;</span></li><li class="pair-good" style="--row: 8"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 12.5 9 17.5 20 6.5"/></svg><span>teams understand the software they operate;</span></li><li class="pair-good" style="--row: 9"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 12.5 9 17.5 20 6.5"/></svg><span>autonomy is granted on the basis of evidence and can be reduced when that evidence changes;</span></li><li class="pair-good" style="--row: 10"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 12.5 9 17.5 20 6.5"/></svg><span>our users receive more valuable software without bearing risks that we chose to ignore.</span></li></ul>
+    </div>
+  </section>
+<section class="section closing" id="final-declaration" aria-labelledby="final-declaration-title">
+    <header class="section-head"><span class="section-tag">07</span><h2 id="final-declaration-title" tabindex="-1">Final declaration</h2></header>
+    <ul class="closing-stances"><li><span class="stance-no">We do not renounce artificial intelligence.</span> <strong class="stance-yes">We renounce using it without accountability.</strong></li><li><span class="stance-no">We do not reject speed.</span> <strong class="stance-yes">We reject confusing speed with progress.</strong></li><li><span class="stance-no">We do not defend tests as a formality.</span> <strong class="stance-yes">We defend them as executable contracts that safeguard our intent.</strong></li><li><span class="stance-no">We do not accept that an agent should redefine what it means to succeed, remove the limits that contain it or become the judge of its own work.</span></li></ul>
+    <div class="closing-outro"><p>We recognize that we are at an early stage and that our framework will evolve. Precisely for that reason, we choose to observe, measure, validate and learn.</p>
+<p>Artificial intelligence can write more software than we have ever been able to produce. Our obligation is to ensure that this software deserves to exist, can be understood and is worthy of the trust of those who use it.</p>
+</div>
+  </section>
+  <div class="closing-quote" data-contrast><blockquote>
+<p><strong>In the age of mass software generation, trust is the most important product of engineering.</strong></p>
+</blockquote>
+</div></div>
+    </main>
+
+    <dialog id="chapter-index" aria-labelledby="index-title" data-lenis-prevent>
+      <div class="index-header"><span class="index-eyebrow">The manifesto</span><button class="close-index" type="button" aria-label="Close index">Close <span aria-hidden="true">×</span></button></div>
+      <h2 id="index-title">Index</h2>
+      <nav class="index-links" aria-label="Section index"><a href="#preamble" data-chapter-link="preamble"><span class="index-number">01</span><span>Preamble</span><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M7 17 17 7M7 7h10v10" stroke="currentColor" stroke-width="1.5"/></svg></a>
+<a href="#our-vision" data-chapter-link="our-vision"><span class="index-number">02</span><span>Our vision</span><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M7 17 17 7M7 7h10v10" stroke="currentColor" stroke-width="1.5"/></svg></a>
+<a href="#our-values" data-chapter-link="our-values"><span class="index-number">03</span><span>Our values</span><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M7 17 17 7M7 7h10v10" stroke="currentColor" stroke-width="1.5"/></svg></a>
+<a href="#principles" data-chapter-link="principles"><span class="index-number">04</span><span>Principles</span><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M7 17 17 7M7 7h10v10" stroke="currentColor" stroke-width="1.5"/></svg></a>
+<a href="#engineering-commitments" data-chapter-link="engineering-commitments"><span class="index-number">05</span><span>Engineering commitments</span><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M7 17 17 7M7 7h10v10" stroke="currentColor" stroke-width="1.5"/></svg></a>
+<a href="#warning-signs" data-chapter-link="warning-signs"><span class="index-number">06</span><span>Warning signs ↔ Healthy engineering</span><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M7 17 17 7M7 7h10v10" stroke="currentColor" stroke-width="1.5"/></svg></a>
+<a href="#final-declaration" data-chapter-link="final-declaration"><span class="index-number">07</span><span>Final declaration</span><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M7 17 17 7M7 7h10v10" stroke="currentColor" stroke-width="1.5"/></svg></a></nav>
+      <a class="index-download" href="/manifesto_software_engineering_ai_era.md" download data-download>Download the original document <span aria-hidden="true">↓</span></a>
+    </dialog>
+    <script type="module" src="/src/main.js"></script>
+  </body>
+</html>
