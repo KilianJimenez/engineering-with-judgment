@@ -49,6 +49,16 @@ jobs:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           ERRORS: ${{ steps.validate.outputs.errors }}
           PR_NUMBER: ${{ github.event.pull_request.number }}
+
+  # Separate job: the "Validar firma" check must be complete (green) before main's protection allows the merge.
+  integrar:
+    name: Integrar firma
+    needs: validar
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
+    steps:
       - name: Integrar
         run: |
           gh pr merge "$PR_NUMBER" --repo "$GITHUB_REPOSITORY" --squash --match-head-commit "$HEAD_SHA" --subject "Firma: $PR_AUTHOR"
@@ -60,7 +70,7 @@ jobs:
 
   # Merges made with GITHUB_TOKEN do not trigger `push`, so the site is redeployed from here.
   desplegar:
-    needs: validar
+    needs: integrar
     uses: ./.github/workflows/deploy.yml
     permissions:
       contents: read
