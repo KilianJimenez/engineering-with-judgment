@@ -7,7 +7,7 @@
     <meta name="color-scheme" content="light dark" />
     <meta name="description" content="La inteligencia artificial genera posibilidades. La ingeniería genera garantías. Un manifiesto sobre evidencia, responsabilidad humana y software digno de confianza." />
     <title>Manifiesto de Ingeniería de Software en la Era de la Inteligencia Artificial</title>
-    <script type="application/json" id="lang-map">{"href":"/en/","ids":{"inicio":"inicio","preambulo":"preamble","nuestra-vision":"our-vision","nuestros-valores":"our-values","principios":"principles","compromisos-de-ingenieria":"engineering-commitments","senales-de-alarma":"warning-signs","como-reconoceremos-una-ingenieria-saludable":"how-we-will-recognize-healthy-engineering","declaracion-final":"final-declaration","1-la-responsabilidad-no-se-delega":"1-accountability-cannot-be-delegated","2-el-test-es-una-fuente-fundamental-de-verdad-operacional":"2-tests-are-a-fundamental-source-of-operational-truth","3-los-tests-son-contratos-no-objetivos-que-deban-doblegarse":"3-tests-are-contracts-not-targets-to-be-bent","4-los-guardarrailes-forman-parte-del-objetivo":"4-guardrails-are-part-of-the-goal","5-validar-es-tan-importante-como-construir":"5-validating-is-as-important-as-building","6-la-velocidad-no-justifica-la-ausencia-de-evidencia":"6-speed-does-not-justify-the-absence-of-evidence","7-todo-sistema-asistido-por-ia-debe-ser-observable":"7-every-ai-assisted-system-must-be-observable","8-medimos-el-sistema-completo-no-solo-la-produccion":"8-we-measure-the-whole-system-not-just-output","9-debemos-detectar-la-divergencia-antes-que-el-dano":"9-we-must-detect-divergence-before-damage","10-todo-resultado-generado-por-ia-es-una-hipotesis-hasta-que-se-valida":"10-every-ai-generated-result-is-a-hypothesis-until-it-is-validated","11-la-independencia-de-la-validacion-debe-preservarse":"11-the-independence-of-validation-must-be-preserved","12-nuestra-gobernanza-debe-evolucionar-con-la-evidencia":"12-our-governance-must-evolve-with-the-evidence"}}</script>
+    <script type="application/json" id="lang-map">{"href":"/engineering-with-judgment/en/","ids":{"inicio":"inicio","preambulo":"preamble","nuestra-vision":"our-vision","nuestros-valores":"our-values","principios":"principles","compromisos-de-ingenieria":"engineering-commitments","senales-de-alarma":"warning-signs","como-reconoceremos-una-ingenieria-saludable":"how-we-will-recognize-healthy-engineering","declaracion-final":"final-declaration","firmas":"firmas","1-la-responsabilidad-no-se-delega":"1-accountability-cannot-be-delegated","2-el-test-es-una-fuente-fundamental-de-verdad-operacional":"2-tests-are-a-fundamental-source-of-operational-truth","3-los-tests-son-contratos-no-objetivos-que-deban-doblegarse":"3-tests-are-contracts-not-targets-to-be-bent","4-los-guardarrailes-forman-parte-del-objetivo":"4-guardrails-are-part-of-the-goal","5-validar-es-tan-importante-como-construir":"5-validating-is-as-important-as-building","6-la-velocidad-no-justifica-la-ausencia-de-evidencia":"6-speed-does-not-justify-the-absence-of-evidence","7-todo-sistema-asistido-por-ia-debe-ser-observable":"7-every-ai-assisted-system-must-be-observable","8-medimos-el-sistema-completo-no-solo-la-produccion":"8-we-measure-the-whole-system-not-just-output","9-debemos-detectar-la-divergencia-antes-que-el-dano":"9-we-must-detect-divergence-before-damage","10-todo-resultado-generado-por-ia-es-una-hipotesis-hasta-que-se-valida":"10-every-ai-generated-result-is-a-hypothesis-until-it-is-validated","11-la-independencia-de-la-validacion-debe-preservarse":"11-the-independence-of-validation-must-be-preserved","12-nuestra-gobernanza-debe-evolucionar-con-la-evidencia":"12-our-governance-must-evolve-with-the-evidence"}}</script>
     <script>
       // Picks the language before first paint: saved choice, else browser language (Spanish → es, anything else → en).
       (() => {
@@ -38,8 +38,9 @@
     <a class="skip-link" href="#preambulo">Saltar al manifiesto</a>
     <div class="reading-progress" role="progressbar" aria-label="Progreso de lectura" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><span></span></div>
     <div class="toolbar">
-      <nav class="lang-switch" aria-label="Idioma"><a href="/" hreflang="es" lang="es" data-lang="es" aria-current="true"><span aria-hidden="true">ES</span><span class="sr-only">Español</span></a><a href="/en/" hreflang="en" lang="en" data-lang="en"><span aria-hidden="true">EN</span><span class="sr-only">English</span></a></nav>
+      <nav class="lang-switch" aria-label="Idioma"><a href="/engineering-with-judgment/" hreflang="es" lang="es" data-lang="es" aria-current="true"><span aria-hidden="true">ES</span><span class="sr-only">Español</span></a><a href="/engineering-with-judgment/en/" hreflang="en" lang="en" data-lang="en"><span aria-hidden="true">EN</span><span class="sr-only">English</span></a></nav>
       <button class="toolbar-button index-toggle" type="button" aria-haspopup="dialog" aria-controls="chapter-index" data-open-index hidden>Índice <span class="menu-icon" aria-hidden="true"><i></i><i></i></span></button>
+      <a class="toolbar-button sign-toggle" href="#firmas" data-open-sign><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 21h18"/><path d="M14.5 4.5 19.5 9.5 9 20H4v-5L14.5 4.5Z"/></svg><span class="sign-label">Firmar</span></a>
       <button class="toolbar-button mode-toggle" type="button" data-mode-toggle hidden aria-label="Cambiar a modo oscuro" data-label-dark="Oscuro" data-label-light="Claro" data-aria-dark="Cambiar a modo oscuro" data-aria-light="Cambiar a modo claro">
         <svg class="icon icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 13A9 9 0 1 1 11 3a7 7 0 0 0 10 10Z"/></svg>
         <svg class="icon icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>
@@ -53,6 +54,7 @@
           <h1 class="hero-kicker" id="manifesto-title">Manifiesto de Ingeniería de Software en la Era de la Inteligencia Artificial</h1>
           <p class="hero-heading">La IA genera <em>posibilidades</em>.<br />La ingeniería genera <mark>garantías</mark>.</p>
           <p class="hero-description">No se trata de generar más software. Se trata de construir software digno de confianza.</p>
+          <a class="hero-sign" href="#firmas" data-open-sign>Firmar el manifiesto <span aria-hidden="true">→</span></a>
         </div>
         <nav class="hero-toc" aria-label="Secciones del manifiesto"><a href="#preambulo" data-chapter-link="preambulo"><span>01</span> Preámbulo</a><a href="#nuestra-vision" data-chapter-link="nuestra-vision"><span>02</span> Nuestra visión</a><a href="#nuestros-valores" data-chapter-link="nuestros-valores"><span>03</span> Nuestros valores</a><a href="#principios" data-chapter-link="principios"><span>04</span> Principios</a><a href="#compromisos-de-ingenieria" data-chapter-link="compromisos-de-ingenieria"><span>05</span> Compromisos de ingeniería</a><a href="#senales-de-alarma" data-chapter-link="senales-de-alarma"><span>06</span> Señales de alarma ↔ Ingeniería saludable</a><a href="#declaracion-final" data-chapter-link="declaracion-final"><span>07</span> Declaración final</a></nav>
       </section>
@@ -315,6 +317,18 @@
 <p><strong>En la era de la generación masiva de software, la confianza es el producto más importante de la ingeniería.</strong></p>
 </blockquote>
 </div></div>
+      <section class="section signers" id="firmas" aria-labelledby="firmas-title">
+    <header class="section-head"><span class="section-tag">08</span><h2 id="firmas-title" tabindex="-1">Firmas</h2><p class="signers-count" data-signers-count><b>1</b> persona ha firmado</p></header>
+    <p class="lede">Quienes se comprometen a construir software digno de confianza.</p>
+    <ul class="signer-grid" data-signers><li><a href="https://github.com/KilianJimenez" title="Kilian Jiménez · Autor del manifiesto" target="_blank" rel="noopener noreferrer"><img src="/avatars/kilianjimenez.png" alt="" width="64" height="64" loading="lazy" decoding="async" /><span class="sr-only">Kilian Jiménez · Autor del manifiesto (abre una nueva pestaña)</span></a></li></ul>
+    
+    <div class="signers-how">
+      <h3>Cómo firmar</h3>
+      <ol class="sign-steps"><li>Indica tu usuario de GitHub (opcional: también puedes escribirlo después).</li><li>GitHub abre el editor con el fichero <code>firmas/&lt;usuario&gt;.yml</code> ya rellenado. Puedes añadir tu nombre y tu rol.</li><li>Pulsa «Propose changes» y después «Create pull request». Una Action valida la firma, la integra y vuelve a publicar esta web.</li></ol>
+      <p class="sign-public">Tu firma es pública: tu usuario, tu avatar y los datos que añadas aparecerán en esta página y en el repositorio.</p>
+      <a class="sign-cta" href="https://github.com/KilianJimenez/engineering-with-judgment/new/main/firmas?filename=tu-usuario.yml&amp;value=github%3A%20tu-usuario%0Anombre%3A%20%0Arol%3A%20%0Afecha%3A%202026-11-25%0A" target="_blank" rel="noopener noreferrer" data-open-sign>Firmar el manifiesto <span aria-hidden="true">→</span><span class="sr-only"> (abre una nueva pestaña)</span></a>
+    </div>
+  </section>
     </main>
 
     <dialog id="chapter-index" aria-labelledby="index-title" data-lenis-prevent>
@@ -327,7 +341,20 @@
 <a href="#compromisos-de-ingenieria" data-chapter-link="compromisos-de-ingenieria"><span class="index-number">05</span><span>Compromisos de ingeniería</span><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M7 17 17 7M7 7h10v10" stroke="currentColor" stroke-width="1.5"/></svg></a>
 <a href="#senales-de-alarma" data-chapter-link="senales-de-alarma"><span class="index-number">06</span><span>Señales de alarma ↔ Ingeniería saludable</span><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M7 17 17 7M7 7h10v10" stroke="currentColor" stroke-width="1.5"/></svg></a>
 <a href="#declaracion-final" data-chapter-link="declaracion-final"><span class="index-number">07</span><span>Declaración final</span><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M7 17 17 7M7 7h10v10" stroke="currentColor" stroke-width="1.5"/></svg></a></nav>
-      <a class="index-download" href="/manifiesto_ingenieria_software_era_ia.md" download data-download>Descargar el documento original <span aria-hidden="true">↓</span></a>
+      <a class="index-download" href="/engineering-with-judgment/manifiesto_ingenieria_software_era_ia.md" download data-download>Descargar el documento original <span aria-hidden="true">↓</span></a>
+    </dialog>
+    <dialog id="sign-dialog" aria-labelledby="sign-title" data-lenis-prevent data-sign-new="https://github.com/KilianJimenez/engineering-with-judgment/new/main/firmas" data-sign-placeholder="tu-usuario">
+      <div class="index-header"><span class="index-eyebrow">Adhesión</span><button class="close-index close-sign" type="button" aria-label="Cerrar diálogo de firma">Cerrar <span aria-hidden="true">×</span></button></div>
+      <h2 id="sign-title">Firmar el manifiesto</h2>
+      <p>Firmar significa que te comprometes a aplicar estos principios en tu trabajo y a defender que la evidencia, y no la velocidad, decide qué llega a producción.</p>
+      <ol class="sign-steps"><li>Indica tu usuario de GitHub (opcional: también puedes escribirlo después).</li><li>GitHub abre el editor con el fichero <code>firmas/&lt;usuario&gt;.yml</code> ya rellenado. Puedes añadir tu nombre y tu rol.</li><li>Pulsa «Propose changes» y después «Create pull request». Una Action valida la firma, la integra y vuelve a publicar esta web.</li></ol>
+      <form class="sign-form" method="dialog" data-sign-form>
+        <label for="sign-user">Tu usuario de GitHub</label>
+        <input id="sign-user" name="github" type="text" autocomplete="username" autocapitalize="off" spellcheck="false" maxlength="39" pattern="[A-Za-z0-9\-]{1,39}" placeholder="tu-usuario" aria-describedby="sign-user-hint" />
+        <small id="sign-user-hint">Opcional. Rellena el nombre del fichero y el campo «github».</small>
+      </form>
+      <p class="sign-public">Tu firma es pública: tu usuario, tu avatar y los datos que añadas aparecerán en esta página y en el repositorio.</p>
+      <a class="sign-cta" href="https://github.com/KilianJimenez/engineering-with-judgment/new/main/firmas?filename=tu-usuario.yml&amp;value=github%3A%20tu-usuario%0Anombre%3A%20%0Arol%3A%20%0Afecha%3A%202026-11-25%0A" target="_blank" rel="noopener noreferrer" data-sign-link>Continuar en GitHub <span aria-hidden="true">→</span><span class="sr-only"> (abre una nueva pestaña)</span></a>
     </dialog>
     <script type="module" src="/src/main.js"></script>
   </body>

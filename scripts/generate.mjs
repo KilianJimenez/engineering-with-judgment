@@ -1,6 +1,8 @@
-import { readFile, writeFile, mkdir, copyFile } from 'node:fs/promises';
+import { readFile, writeFile, mkdir, copyFile, readdir, access } from 'node:fs/promises';
 import { fileURLToPath } from 'node:url';
 import { marked } from 'marked';
+import { BASE, REPO } from './site.mjs';
+import { parseSignature, checkSignature } from './validate-signature.mjs';
 
 const root = new URL('../', import.meta.url);
 const evidence = JSON.parse(await readFile(new URL('src/data/principios-evidencia.json', root), 'utf8')).principios;
@@ -25,7 +27,7 @@ const languages = {
   es: {
     source: 'manifiesto_ingenieria_software_era_ia.md',
     output: 'index.html',
-    href: '/',
+    href: BASE,
     chapters: ['Preámbulo', 'Nuestra visión', 'Nuestros valores', 'Principios', 'Compromisos de ingeniería', 'Señales de alarma', 'Cómo reconoceremos una ingeniería saludable', 'Declaración final'],
     versus: 'sobre',
     stancePrefix: 'No ',
@@ -41,12 +43,25 @@ const languages = {
       newTab: 'abre una nueva pestaña', evidence: 'Dato que respalda el principio', source: 'Fuente',
       fundamentals: 'fundamentos.', hintPinned: 'Sigue desplazándote: avanzan en horizontal.', hintSwipe: 'Desliza para recorrerlos.',
       readMore: 'Leer el principio completo', versusLabel: 'por encima de', healthy: 'Ingeniería saludable',
+      sign: 'Firmar', signTitle: 'Firmar el manifiesto', signEyebrow: 'Adhesión', closeSign: 'Cerrar diálogo de firma',
+      signIntro: 'Firmar significa que te comprometes a aplicar estos principios en tu trabajo y a defender que la evidencia, y no la velocidad, decide qué llega a producción.',
+      signSteps: [
+        'Indica tu usuario de GitHub (opcional: también puedes escribirlo después).',
+        'GitHub abre el editor con el fichero <code>firmas/&lt;usuario&gt;.yml</code> ya rellenado. Puedes añadir tu nombre y tu rol.',
+        'Pulsa «Propose changes» y después «Create pull request». Una Action valida la firma, la integra y vuelve a publicar esta web.',
+      ],
+      signUser: 'Tu usuario de GitHub', signUserHint: 'Opcional. Rellena el nombre del fichero y el campo «github».',
+      signPublic: 'Tu firma es pública: tu usuario, tu avatar y los datos que añadas aparecerán en esta página y en el repositorio.',
+      signContinue: 'Continuar en GitHub', signPlaceholder: 'tu-usuario',
+      signersTitle: 'Firmas', signersLead: 'Quienes se comprometen a construir software digno de confianza.',
+      signersCount: (n) => (n === 1 ? '<b>1</b> persona ha firmado' : `<b>${n}</b> personas han firmado`),
+      signersAll: 'Ver todas las firmas', signersHow: 'Cómo firmar',
     },
   },
   en: {
     source: 'manifesto_software_engineering_ai_era.md',
     output: 'en/index.html',
-    href: '/en/',
+    href: `${BASE}en/`,
     chapters: ['Preamble', 'Our vision', 'Our values', 'Principles', 'Engineering commitments', 'Warning signs', 'How we will recognize healthy engineering', 'Final declaration'],
     versus: 'over',
     stancePrefix: 'We do not ',
@@ -62,6 +77,19 @@ const languages = {
       newTab: 'opens in a new tab', evidence: 'Data supporting the principle', source: 'Source',
       fundamentals: 'fundamentals.', hintPinned: 'Keep scrolling: they move horizontally.', hintSwipe: 'Swipe to browse them.',
       readMore: 'Read the full principle', versusLabel: 'over', healthy: 'Healthy engineering',
+      sign: 'Sign', signTitle: 'Sign the manifesto', signEyebrow: 'Endorsement', closeSign: 'Close signing dialog',
+      signIntro: 'Signing means you commit to applying these principles in your work and to standing up for evidence, not speed, as what decides what reaches production.',
+      signSteps: [
+        'Enter your GitHub username (optional: you can also type it later).',
+        'GitHub opens the editor with the file <code>firmas/&lt;username&gt;.yml</code> already filled in. You can add your name and role.',
+        'Click “Propose changes” and then “Create pull request”. An Action validates the signature, merges it and republishes this site.',
+      ],
+      signUser: 'Your GitHub username', signUserHint: 'Optional. Fills in the file name and the “github” field.',
+      signPublic: 'Your signature is public: your username, avatar and any details you add will appear on this page and in the repository.',
+      signContinue: 'Continue on GitHub', signPlaceholder: 'your-username',
+      signersTitle: 'Signatures', signersLead: 'Those who commit to building trustworthy software.',
+      signersCount: (n) => (n === 1 ? '<b>1</b> person has signed' : `<b>${n}</b> people have signed`),
+      signersAll: 'See all signatures', signersHow: 'How to sign',
     },
   },
 };
@@ -99,6 +127,52 @@ const principioIcons = ['user', 'flask', 'file', 'shield', 'check', 'gauge', 'ey
 const compromisoIcons = ['target', 'user', 'lock', 'split', 'key', 'gauge', 'log', 'chart', 'undo', 'bulb', 'loop', 'compass'];
 const alarmaIcons = ['pr', 'flask', 'shield', 'chart', 'brain', 'file', 'key', 'eye', 'alert', 'gauge'];
 
+// ---------- Signatures ----------
+const SIGNERS_VISIBLE = 48;
+const signUrl = (login, placeholder) => {
+  const user = login || placeholder;
+  const yaml = `github: ${user}\nnombre: \nrol: \nfecha: ${new Date().toISOString().slice(0, 10)}\n`;
+  return `https://github.com/${REPO}/new/main/firmas?filename=${encodeURIComponent(user)}.yml&value=${encodeURIComponent(yaml)}`;
+};
+async function loadSigners() {
+  const dir = new URL('firmas/', root);
+  const names = (await readdir(dir)).filter((name) => name.endsWith('.yml'));
+  const signers = [];
+  for (const name of names) {
+    try {
+      const data = parseSignature(await readFile(new URL(name, dir), 'utf8'));
+      const errors = checkSignature(data);
+      if (data.github?.toLowerCase() !== name.slice(0, -4).toLowerCase()) errors.push('«github» no coincide con el nombre del fichero');
+      if (errors.length) throw new Error(errors.join(' '));
+      signers.push(data);
+    } catch (error) {
+      console.warn(`Firma ignorada (firmas/${name}): ${error.message}`);
+    }
+  }
+  signers.sort((a, b) => (a.fecha ?? '9999').localeCompare(b.fecha ?? '9999') || a.github.localeCompare(b.github));
+  // Avatars are downloaded at build time and served by the site itself (no external services at runtime).
+  const avatars = new URL('public/avatars/', root);
+  await mkdir(avatars, { recursive: true });
+  await Promise.all(signers.map(async (signer) => {
+    const file = new URL(`${signer.github.toLowerCase()}.png`, avatars);
+    try {
+      await access(file);
+      signer.avatar = true;
+      return;
+    } catch { /* not cached yet */ }
+    try {
+      const response = await fetch(`https://github.com/${signer.github}.png?size=96`, { signal: AbortSignal.timeout(10000) });
+      if (!response.ok) throw new Error(String(response.status));
+      await writeFile(file, Buffer.from(await response.arrayBuffer()));
+      signer.avatar = true;
+    } catch (error) {
+      console.warn(`Avatar no disponible para ${signer.github} (${error.message}): se muestran las iniciales.`);
+    }
+  }));
+  return signers;
+}
+const signers = await loadSigners();
+const initials = (signer) => (signer.nombre || signer.github).split(/[\s-]+/).filter(Boolean).slice(0, 2).map((word) => word[0].toUpperCase()).join('');
 
 async function render(code) {
   const lang = languages[code];
@@ -214,6 +288,26 @@ async function render(code) {
   </section>
   <div class="closing-quote" data-contrast>${parse(final.tokens.filter((t) => t.type === 'blockquote'))}</div>`;
 
+  const signSteps = `<ol class="sign-steps">${t.signSteps.map((step) => `<li>${step}</li>`).join('')}</ol>`;
+  const signersHTML = `<section class="section signers" id="firmas" aria-labelledby="firmas-title">
+    ${sectionHead('08', { id: 'firmas', title: t.signersTitle }, `<p class="signers-count" data-signers-count>${t.signersCount(signers.length)}</p>`)}
+    <p class="lede">${t.signersLead}</p>
+    <ul class="signer-grid" data-signers>${signers.map((signer, i) => {
+      const label = [signer.nombre || signer.github, signer.rol].filter(Boolean).join(' · ');
+      const face = signer.avatar
+        ? `<img src="/avatars/${signer.github.toLowerCase()}.png" alt="" width="64" height="64" loading="lazy" decoding="async" />`
+        : `<span class="signer-initials" aria-hidden="true">${escape(initials(signer))}</span>`;
+      return `<li${i >= SIGNERS_VISIBLE ? ' class="is-extra"' : ''}><a href="https://github.com/${escape(signer.github)}" title="${escape(label)}" target="_blank" rel="noopener noreferrer">${face}<span class="sr-only">${escape(label)} (${t.newTab})</span></a></li>`;
+    }).join('')}</ul>
+    ${signers.length > SIGNERS_VISIBLE ? `<button class="toolbar-button signers-more" type="button" data-signers-more hidden>${t.signersAll}</button>` : ''}
+    <div class="signers-how">
+      <h3>${t.signersHow}</h3>
+      ${signSteps}
+      <p class="sign-public">${t.signPublic}</p>
+      <a class="sign-cta" href="${escape(signUrl('', t.signPlaceholder))}" target="_blank" rel="noopener noreferrer" data-open-sign>${t.signTitle} <span aria-hidden="true">→</span><span class="sr-only"> (${t.newTab})</span></a>
+    </div>
+  </section>`;
+
   const navItems = [
     [preambulo.id, preambulo.title], [vision.id, vision.title], [valores.id, valores.title], [principios.id, principios.title],
     [compromisos.id, compromisos.title], [alarmas.id, `${alarmas.title} ↔ ${t.healthy}`], [final.id, final.title],
@@ -221,6 +315,11 @@ async function render(code) {
   const arrow = '<svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M7 17 17 7M7 7h10v10" stroke="currentColor" stroke-width="1.5"/></svg>';
   const html = template
     .replace(/\{\{T\.(\w+)\}\}/g, (_, key) => (key.startsWith('hero') ? t[key] : escape(t[key])))
+    .replaceAll('{{BASE}}', BASE)
+    .replace('{{SIGN_STEPS}}', () => signSteps)
+    .replace('{{SIGN_URL}}', escape(signUrl('', t.signPlaceholder)))
+    .replace('{{SIGN_NEW}}', escape(`https://github.com/${REPO}/new/main/firmas`))
+    .replace('{{SIGNERS}}', () => signersHTML)
     .replaceAll('{{LANG}}', code)
     .replaceAll('{{SOURCE}}', lang.source)
     .replaceAll('{{FIRST_ID}}', preambulo.id)
@@ -230,7 +329,7 @@ async function render(code) {
     .replace('{{TOC}}', navItems.map(([id, text], i) => `<a href="#${id}" data-chapter-link="${id}"><span>${pad(i + 1)}</span> ${escape(text)}</a>`).join(''))
     .replace('{{INDEX}}', navItems.map(([id, text], i) => `<a href="#${id}" data-chapter-link="${id}"><span class="index-number">${pad(i + 1)}</span><span>${escape(text)}</span>${arrow}</a>`).join('\n'));
   // Ids in page order, so a section or principle can be matched with its counterpart in the other language.
-  const ids = ['inicio', ...[preambulo, vision, valores, principios, compromisos, alarmas, saludable, final].map((ch) => ch.id), ...principleGroups.map(({ heading }) => slug(heading.text))];
+  const ids = ['inicio', ...[preambulo, vision, valores, principios, compromisos, alarmas, saludable, final].map((ch) => ch.id), 'firmas', ...principleGroups.map(({ heading }) => slug(heading.text))];
   return { code, html, ids, sections: navItems.length };
 }
 

@@ -5,10 +5,12 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger';
 gsap.registerPlugin(ScrollTrigger);
 
 const root = document.documentElement;
-const sections = [document.querySelector('#inicio'), ...document.querySelectorAll('#manifesto-content > section')];
+const sections = [document.querySelector('#inicio'), ...document.querySelectorAll('#manifesto-content > section'), document.querySelector('#firmas')];
 const progress = document.querySelector('.reading-progress');
 const progressFill = progress.firstElementChild;
 const dialog = document.querySelector('#chapter-index');
+const signDialog = document.querySelector('#sign-dialog');
+const dialogs = [dialog, signDialog];
 const openIndex = document.querySelector('[data-open-index]');
 const navigationLinks = [...document.querySelectorAll('[data-chapter-link]')];
 const reducedMotionQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
@@ -106,7 +108,7 @@ motion.add('(prefers-reduced-motion: no-preference) and (pointer: fine)', () => 
   const tick = (time) => lenis?.raf(time * 1000);
   gsap.ticker.add(tick);
   gsap.ticker.lagSmoothing(0);
-  if (dialog.open) lenis.stop();
+  if (dialogs.some((d) => d.open)) lenis.stop();
   return () => {
     lenis.destroy();
     lenis = undefined;
@@ -164,9 +166,16 @@ motion.add('(prefers-reduced-motion: no-preference)', () => {
 });
 
 // ---------- Navigation ----------
+function openDialog(target) {
+  target.showModal();
+  document.body.classList.add('menu-open');
+  lenis?.stop();
+}
+
 function closeDialog() {
-  if (!dialog.open) return;
-  dialog.close();
+  const open = dialogs.find((d) => d.open);
+  if (!open) return;
+  open.close();
   // The dialog's close event is queued; scrolling must resume before navigation.
   document.body.classList.remove('menu-open');
   lenis?.start();
@@ -219,7 +228,7 @@ function navigateTo(target, { updateHistory = true, focus = true } = {}) {
 }
 
 document.addEventListener('click', (event) => {
-  const link = event.target.closest('a[href^="#"]');
+  const link = event.target.closest('a[href^="#"]:not([data-open-sign])');
   if (!link || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey || event.button !== 0) return;
   const target = document.getElementById(decodeURIComponent(link.hash.slice(1)));
   if (!target) return;
@@ -229,20 +238,67 @@ document.addEventListener('click', (event) => {
 });
 
 openIndex.hidden = false;
-openIndex.addEventListener('click', () => {
-  dialog.showModal();
-  document.body.classList.add('menu-open');
-  lenis?.stop();
+openIndex.addEventListener('click', () => openDialog(dialog));
+dialogs.forEach((d) => {
+  d.querySelector('.close-index').addEventListener('click', closeDialog);
+  d.addEventListener('click', (event) => {
+    const bounds = d.getBoundingClientRect();
+    if (event.target === d && (event.clientX < bounds.left || event.clientX > bounds.right || event.clientY < bounds.top || event.clientY > bounds.bottom)) closeDialog();
+  });
+  d.addEventListener('close', () => {
+    document.body.classList.remove('menu-open');
+    lenis?.start();
+  });
 });
-document.querySelector('.close-index').addEventListener('click', closeDialog);
-dialog.addEventListener('click', (event) => {
-  const bounds = dialog.getBoundingClientRect();
-  if (event.target === dialog && (event.clientX < bounds.left || event.clientX > bounds.right || event.clientY < bounds.top || event.clientY > bounds.bottom)) closeDialog();
+
+// ---------- Sign the manifesto ----------
+// Without JavaScript the sign links lead to #firmas (or straight to GitHub); with it they open the dialog.
+const signInput = signDialog.querySelector('#sign-user');
+const signLink = signDialog.querySelector('[data-sign-link]');
+function updateSignLink() {
+  const value = signInput.value.trim().replace(/^@/, '');
+  const user = /^[a-z\d](?:[a-z\d]|-(?=[a-z\d])){0,38}$/i.test(value) ? value : signDialog.dataset.signPlaceholder;
+  const yaml = `github: ${user}\nnombre: \nrol: \nfecha: ${new Date().toISOString().slice(0, 10)}\n`;
+  signLink.href = `${signDialog.dataset.signNew}?filename=${encodeURIComponent(user)}.yml&value=${encodeURIComponent(yaml)}`;
+}
+signInput.addEventListener('input', updateSignLink);
+signDialog.querySelector('[data-sign-form]').addEventListener('submit', (event) => {
+  event.preventDefault();
+  signLink.click();
 });
-dialog.addEventListener('close', () => {
-  document.body.classList.remove('menu-open');
-  lenis?.start();
+updateSignLink();
+document.querySelectorAll('[data-open-sign]').forEach((link) => {
+  link.setAttribute('role', 'button');
+  link.setAttribute('aria-haspopup', 'dialog');
+  link.setAttribute('aria-controls', 'sign-dialog');
+  link.removeAttribute('target');
+  link.querySelector('.sr-only')?.remove();
+  link.addEventListener('click', (event) => {
+    if (event.metaKey || event.ctrlKey || event.shiftKey || event.altKey || event.button !== 0) return;
+    event.preventDefault();
+    closeDialog();
+    openDialog(signDialog);
+  });
+  link.addEventListener('keydown', (event) => {
+    if (event.key === ' ') {
+      event.preventDefault();
+      link.click();
+    }
+  });
 });
+
+const signersMore = document.querySelector('[data-signers-more]');
+if (signersMore) {
+  const grid = document.querySelector('[data-signers]');
+  grid.classList.add('is-collapsed');
+  signersMore.hidden = false;
+  signersMore.addEventListener('click', () => {
+    grid.classList.remove('is-collapsed');
+    signersMore.remove();
+    grid.querySelector('.is-extra a')?.focus();
+    ScrollTrigger.refresh();
+  });
+}
 
 window.addEventListener('popstate', () => {
   const target = document.getElementById(decodeURIComponent(location.hash.slice(1)) || 'inicio');

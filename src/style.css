@@ -92,6 +92,7 @@ button:disabled { opacity: .35; cursor: default; }
 .toolbar-button { display: inline-flex; align-items: center; gap: 8px; min-height: 40px; padding: 8px 14px; border: 1px solid var(--line); border-radius: 10px; background: var(--surface); color: var(--ink); font-size: 14px; font-weight: 600; box-shadow: var(--shadow); }
 .toolbar-button:hover { border-color: var(--acc); color: var(--acc); }
 .toolbar-button .icon { width: 18px; height: 18px; }
+a.toolbar-button { text-decoration: none; }
 html[data-theme='dark'] .icon-moon, html:not([data-theme='dark']) .icon-sun { display: none; }
 .lang-switch { display: inline-flex; gap: 2px; padding: 3px; border: 1px solid var(--line); border-radius: 10px; background: var(--surface); box-shadow: var(--shadow); }
 .lang-switch a { display: inline-flex; align-items: center; min-width: 38px; min-height: 32px; justify-content: center; padding: 4px 8px; border-radius: 7px; color: var(--mute); font-size: 13px; font-weight: 700; letter-spacing: .04em; text-decoration: none; }
@@ -118,6 +119,8 @@ html[data-theme='dark'] .icon-moon, html:not([data-theme='dark']) .icon-sun { di
 .hero-heading em { font-style: normal; color: var(--acc); }
 .hero-heading mark { display: inline-block; padding: 0 .12em .1em; border-radius: .12em; background: var(--acc); color: var(--bg); line-height: 1; }
 .hero-description { max-width: 46ch; margin-bottom: 32px; color: var(--mute); font-size: 19px; }
+.hero-sign { display: inline-flex; gap: 10px; align-items: center; margin-bottom: 8px; padding: 12px 20px; border-radius: 10px; background: var(--acc); color: var(--bg); font-weight: 700; text-decoration: none; }
+.hero-sign:hover { filter: brightness(1.1); }
 .hero-toc { display: flex; flex-wrap: wrap; gap: 8px; }
 .hero-toc a { padding: 8px 14px; border: 1px solid var(--line); border-radius: 8px; background: var(--surface); color: var(--ink); font-size: 14px; text-decoration: none; }
 .hero-toc a span { color: var(--acc); font-weight: 700; }
@@ -238,6 +241,27 @@ dialog h2 { margin-bottom: 20px; font-size: clamp(32px, 5vw, 44px); font-weight:
 .index-number { color: var(--acc); font-size: 13px; font-weight: 700; }
 .index-download { display: inline-block; margin-top: 22px; color: var(--mute); font-weight: 600; }
 
+/* ---------- Sign dialog and signatures ---------- */
+.sign-steps { display: grid; gap: 10px; margin: 0 0 20px; padding-left: 1.4em; }
+.sign-steps code { padding: 0 .3em; border-radius: 4px; background: var(--acc-soft); font-size: .9em; }
+.sign-form { display: grid; gap: 6px; margin-bottom: 16px; }
+.sign-form label { font-weight: 700; }
+.sign-form input { min-height: 44px; padding: 8px 12px; border: 1px solid var(--mute); border-radius: 8px; background: var(--bg); color: var(--ink); font: inherit; }
+.sign-form input:focus-visible { outline: 2px solid var(--acc); outline-offset: 2px; }
+.sign-form small, .sign-public { color: var(--mute); font-size: 14px; }
+.sign-cta { display: inline-flex; gap: 10px; align-items: center; margin-top: 8px; padding: 12px 20px; border-radius: 10px; background: var(--acc); color: var(--bg); font-weight: 700; text-decoration: none; }
+.sign-cta:hover { filter: brightness(1.1); }
+.signers-count { margin: 0; color: var(--mute); font-size: 19px; }
+.signers-count b { color: var(--acc); font-size: 1.4em; }
+.signer-grid { display: flex; flex-wrap: wrap; gap: 12px; margin: 32px 0; padding: 0; list-style: none; }
+.signer-grid.is-collapsed .is-extra { display: none; }
+.signer-grid a { display: grid; place-items: center; width: 64px; height: 64px; overflow: hidden; border: 2px solid var(--line); border-radius: 50%; background: var(--surface); color: var(--ink); font-weight: 700; text-decoration: none; transition: border-color .2s, transform .2s; }
+.signer-grid a:hover, .signer-grid a:focus-visible { border-color: var(--acc); transform: translateY(-2px); }
+.signer-grid img { width: 100%; height: 100%; object-fit: cover; }
+.signers-more { margin-bottom: 32px; }
+.signers-how { max-width: 60ch; margin-top: 24px; padding-top: 32px; border-top: 1px solid var(--line); }
+.signers-how h3 { margin: 0 0 16px; font-size: 24px; }
+
 /* ---------- Responsive ---------- */
 @media (max-width: 1000px) {
   .preamble-layout { grid-template-columns: 1fr; }
@@ -246,6 +270,7 @@ dialog h2 { margin-bottom: 20px; font-size: clamp(32px, 5vw, 44px); font-weight:
 
 @media (max-width: 800px) {
   .toolbar { top: 12px; right: 12px; }
+  .sign-label { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
   .prose-columns { columns: 1; }
   .closing-stances li { grid-template-columns: 1fr; }
   .steps { grid-template-columns: 1fr; }
@@ -274,7 +299,7 @@ dialog h2 { margin-bottom: 20px; font-size: clamp(32px, 5vw, 44px); font-weight:
 }
 
 @media print {
-  .toolbar, .reading-progress, .hero-toc, .carousel-nav, dialog, .skip-link { display: none !important; }
+  .toolbar, .reading-progress, .hero-toc, .hero-sign, .signers-how, .signers-more, .carousel-nav, dialog, .skip-link { display: none !important; }
   .principles-track, .values-track { flex-wrap: wrap; overflow: visible; }
   .principle-card details > * { display: block; }
 }
