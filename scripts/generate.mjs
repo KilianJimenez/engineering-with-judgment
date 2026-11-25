@@ -47,7 +47,7 @@ const languages = {
       signIntro: 'Firmar significa que te comprometes a aplicar estos principios en tu trabajo y a defender que la evidencia, y no la velocidad, decide qué llega a producción.',
       signSteps: [
         'Indica tu usuario de GitHub (opcional: también puedes escribirlo después).',
-        'GitHub abre el editor con el fichero <code>firmas/&lt;usuario&gt;.yml</code> ya rellenado. Puedes añadir tu nombre y tu rol.',
+        'GitHub abre el editor con el fichero <code>signatures/&lt;usuario&gt;.yml</code> ya rellenado. Puedes añadir tu nombre y tu rol.',
         'Pulsa «Propose changes» y después «Create pull request». Una Action valida la firma, la integra y vuelve a publicar esta web.',
       ],
       signUser: 'Tu usuario de GitHub', signUserHint: 'Opcional. Rellena el nombre del fichero y el campo «github».',
@@ -81,7 +81,7 @@ const languages = {
       signIntro: 'Signing means you commit to applying these principles in your work and to standing up for evidence, not speed, as what decides what reaches production.',
       signSteps: [
         'Enter your GitHub username (optional: you can also type it later).',
-        'GitHub opens the editor with the file <code>firmas/&lt;username&gt;.yml</code> already filled in. You can add your name and role.',
+        'GitHub opens the editor with the file <code>signatures/&lt;username&gt;.yml</code> already filled in. You can add your name and role.',
         'Click “Propose changes” and then “Create pull request”. An Action validates the signature, merges it and republishes this site.',
       ],
       signUser: 'Your GitHub username', signUserHint: 'Optional. Fills in the file name and the “github” field.',
@@ -132,10 +132,10 @@ const SIGNERS_VISIBLE = 48;
 const signUrl = (login, placeholder) => {
   const user = login || placeholder;
   const yaml = `github: ${user}\nnombre: \nrol: \nfecha: ${new Date().toISOString().slice(0, 10)}\n`;
-  return `https://github.com/${REPO}/new/main/firmas?filename=${encodeURIComponent(user)}.yml&value=${encodeURIComponent(yaml)}`;
+  return `https://github.com/${REPO}/new/main/signatures?filename=${encodeURIComponent(user)}.yml&value=${encodeURIComponent(yaml)}`;
 };
 async function loadSigners() {
-  const dir = new URL('firmas/', root);
+  const dir = new URL('signatures/', root);
   const names = (await readdir(dir)).filter((name) => name.endsWith('.yml'));
   const signers = [];
   for (const name of names) {
@@ -146,7 +146,7 @@ async function loadSigners() {
       if (errors.length) throw new Error(errors.join(' '));
       signers.push(data);
     } catch (error) {
-      console.warn(`Firma ignorada (firmas/${name}): ${error.message}`);
+      console.warn(`Firma ignorada (signatures/${name}): ${error.message}`);
     }
   }
   signers.sort((a, b) => (a.fecha ?? '9999').localeCompare(b.fecha ?? '9999') || a.github.localeCompare(b.github));
@@ -318,7 +318,7 @@ async function render(code) {
     .replaceAll('{{BASE}}', BASE)
     .replace('{{SIGN_STEPS}}', () => signSteps)
     .replace('{{SIGN_URL}}', escape(signUrl('', t.signPlaceholder)))
-    .replace('{{SIGN_NEW}}', escape(`https://github.com/${REPO}/new/main/firmas`))
+    .replace('{{SIGN_NEW}}', escape(`https://github.com/${REPO}/new/main/signatures`))
     .replace('{{SIGNERS}}', () => signersHTML)
     .replaceAll('{{LANG}}', code)
     .replaceAll('{{SOURCE}}', lang.source)

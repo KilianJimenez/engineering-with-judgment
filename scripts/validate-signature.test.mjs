@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import { validateSignaturePR, parseSignature } from './validate-signature.mjs';
 
 const valid = 'github: octocat\nnombre: Mona Lisa Octocat\nrol: "QA Engineer @ Acme: calidad"\nfecha: 2026-11-25\n';
-const pr = (overrides = {}) => ({ files: [{ filename: 'firmas/octocat.yml', status: 'added' }], author: 'octocat', content: valid, existing: ['KilianJimenez'], ...overrides });
+const pr = (overrides = {}) => ({ files: [{ filename: 'signatures/octocat.yml', status: 'added' }], author: 'octocat', content: valid, existing: ['KilianJimenez'], ...overrides });
 
 test('acepta una firma válida (usuario sin distinguir mayúsculas)', () => {
   assert.deepEqual(validateSignaturePR(pr()), []);
@@ -22,9 +22,9 @@ test('rechaza firmas de otro autor', () => {
 });
 
 test('rechaza varios ficheros, rutas ajenas y modificar firmas', () => {
-  assert.match(validateSignaturePR(pr({ files: [{ filename: 'firmas/octocat.yml', status: 'added' }, { filename: 'README.md', status: 'modified' }] })).join(), /exactamente un fichero/);
-  assert.match(validateSignaturePR(pr({ files: [{ filename: 'scripts/octocat.yml', status: 'added' }] })).join(), /firmas\/octocat\.yml/);
-  assert.match(validateSignaturePR(pr({ files: [{ filename: 'firmas/octocat.yml', status: 'modified' }] })).join(), /no modificar/);
+  assert.match(validateSignaturePR(pr({ files: [{ filename: 'signatures/octocat.yml', status: 'added' }, { filename: 'README.md', status: 'modified' }] })).join(), /exactamente un fichero/);
+  assert.match(validateSignaturePR(pr({ files: [{ filename: 'scripts/octocat.yml', status: 'added' }] })).join(), /signatures\/octocat\.yml/);
+  assert.match(validateSignaturePR(pr({ files: [{ filename: 'signatures/octocat.yml', status: 'modified' }] })).join(), /no modificar/);
   assert.match(validateSignaturePR(pr({ existing: ['OCTOCAT'] })).join(), /ya ha firmado/);
 });
 

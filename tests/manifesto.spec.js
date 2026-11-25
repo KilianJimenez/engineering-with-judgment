@@ -276,7 +276,7 @@ test.describe('firmas', () => {
     await dialog.getByLabel('Tu usuario de GitHub').fill('@octocat');
     const link = dialog.getByRole('link', { name: /Continuar en GitHub/ });
     const url = new URL(await link.getAttribute('href'));
-    expect(url.origin + url.pathname).toBe('https://github.com/KilianJimenez/engineering-with-judgment/new/main/firmas');
+    expect(url.origin + url.pathname).toBe('https://github.com/KilianJimenez/engineering-with-judgment/new/main/signatures');
     expect(url.searchParams.get('filename')).toBe('octocat.yml');
     expect(url.searchParams.get('value')).toMatch(/^github: octocat\nnombre: \nrol: \nfecha: \d{4}-\d{2}-\d{2}\n$/);
     await expect(link).toHaveAttribute('target', '_blank');
@@ -304,7 +304,7 @@ test.describe('firmas', () => {
     await page.locator('.hero [data-open-sign]').click();
     await expect(page).toHaveURL(/#firmas$/);
     await expect(page.locator('#firmas-title')).toBeInViewport();
-    await expect(page.locator('#firmas .sign-cta')).toHaveAttribute('href', /^https:\/\/github\.com\/KilianJimenez\/engineering-with-judgment\/new\/main\/firmas\?filename=tu-usuario\.yml/);
+    await expect(page.locator('#firmas .sign-cta')).toHaveAttribute('href', /^https:\/\/github\.com\/KilianJimenez\/engineering-with-judgment\/new\/main\/signatures\?filename=tu-usuario\.yml/);
     await context.close();
   });
 });

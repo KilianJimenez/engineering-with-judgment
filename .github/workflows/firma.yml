@@ -7,7 +7,7 @@ on:
   pull_request_target:
     types: [opened, synchronize, reopened]
     branches: [main]
-    paths: ['firmas/**']
+    paths: ['signatures/**']
 
 concurrency:
   group: firma-${{ github.event.pull_request.number }}
@@ -42,7 +42,7 @@ jobs:
             echo
             echo "$ERRORS"
             echo
-            echo "Corrige el fichero con un nuevo commit en este PR. Formato: [firmas/README.md](https://github.com/${GITHUB_REPOSITORY}/blob/main/firmas/README.md)."
+            echo "Corrige el fichero con un nuevo commit en este PR. Formato: [signatures/README.md](https://github.com/${GITHUB_REPOSITORY}/blob/main/signatures/README.md)."
           } > comment.md
           gh pr comment "$PR_NUMBER" --repo "$GITHUB_REPOSITORY" --body-file comment.md
         env:

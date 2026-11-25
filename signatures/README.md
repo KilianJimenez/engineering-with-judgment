@@ -1,6 +1,6 @@
 # Firmas
 
-Cada persona que se adhiere al manifiesto añade un fichero `firmas/<usuario-de-github>.yml`:
+Cada persona que se adhiere al manifiesto añade un fichero `signatures/<usuario-de-github>.yml`:
 
 ```yaml
 github: octocat              # obligatorio, igual a tu usuario y al nombre del fichero
@@ -13,7 +13,7 @@ Si un valor contiene `:` o `#`, escríbelo entre comillas dobles. No se admiten 
 
 ## Firmar a mano
 
-1. Abre <https://github.com/KilianJimenez/engineering-with-judgment/new/main/firmas?filename=TU-USUARIO.yml> (GitHub crea un fork si no tienes permisos de escritura).
+1. Abre <https://github.com/KilianJimenez/engineering-with-judgment/new/main/signatures?filename=TU-USUARIO.yml> (GitHub crea un fork si no tienes permisos de escritura).
 2. Rellena el fichero con el formato anterior y pulsa **Propose changes** → **Create pull request**.
 3. La Action `Firma` valida el PR (un único fichero nuevo, a tu nombre, con campos válidos) y lo mergea. La web se vuelve a publicar con tu firma.
 

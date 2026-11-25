@@ -1,7 +1,7 @@
-// Signature files (firmas/<login>.yml): parsing and validation shared by the generator and the GitHub Action.
+// Signature files (signatures/<login>.yml): parsing and validation shared by the generator and the GitHub Action.
 export const FIELDS = { github: 39, nombre: 80, rol: 100, fecha: 10 };
 const LOGIN = /^[a-z\d](?:[a-z\d]|-(?=[a-z\d])){0,38}$/i;
-const FILE = /^firmas\/([^/]+)\.yml$/;
+const FILE = /^signatures\/([^/]+)\.yml$/;
 
 // Minimal YAML subset: one `key: value` per line, values optionally double-quoted, `#` comments.
 export function parseSignature(text) {
@@ -56,11 +56,11 @@ export function validateSignaturePR({ files, author, content, existing = [] }) {
   if (files.length !== 1) return [`La firma debe añadir exactamente un fichero (el PR cambia ${files.length}).`];
   const [file] = files;
   const match = file.filename.match(FILE);
-  if (!match) return [`El fichero debe ser «firmas/${author}.yml» (es «${file.filename}»).`];
+  if (!match) return [`El fichero debe ser «signatures/${author}.yml» (es «${file.filename}»).`];
   if (file.status !== 'added') return ['Solo se pueden añadir firmas nuevas, no modificar ni borrar las existentes.'];
   const login = match[1];
   const errors = [];
-  if (login.toLowerCase() !== author.toLowerCase()) errors.push(`El fichero debe llamarse «firmas/${author}.yml»: solo puedes firmar con tu propio usuario.`);
+  if (login.toLowerCase() !== author.toLowerCase()) errors.push(`El fichero debe llamarse «signatures/${author}.yml»: solo puedes firmar con tu propio usuario.`);
   if (existing.some((name) => name.toLowerCase() === login.toLowerCase())) errors.push(`«${login}» ya ha firmado el manifiesto.`);
   let data;
   try { data = parseSignature(content); } catch (error) { return [...errors, `YAML no válido: ${error.message}.`]; }
@@ -81,7 +81,7 @@ async function main() {
     return accept.endsWith('raw') ? response.text() : response.json();
   };
   const files = await api(`/pulls/${PR_NUMBER}/files?per_page=100`);
-  const existing = ((await api('/contents/firmas?ref=main')) ?? [])
+  const existing = ((await api('/contents/signatures?ref=main')) ?? [])
     .filter((entry) => entry.type === 'file' && entry.name.endsWith('.yml')).map((entry) => entry.name.slice(0, -4));
   const content = files.length === 1 && files[0].status === 'added' ? await api(files[0].contents_url, 'application/vnd.github.raw') ?? '' : '';
   const errors = validateSignaturePR({ files, author: PR_AUTHOR, content, existing });
