@@ -3,27 +3,27 @@ import AxeBuilder from '@axe-core/playwright';
 import { readFile } from 'node:fs/promises';
 import { marked } from 'marked';
 
-const sourcePath = new URL('../manifiesto_ingenieria_software_era_ia.md', import.meta.url);
+const sourcePath = new URL('../declaracion_ingenieria_software_era_ia.md', import.meta.url);
 
-test('el HTML contiene todo el manifiesto sin alterar textos', async ({ page, request }) => {
+test('el HTML contiene toda la declaración sin alterar textos', async ({ page, request }) => {
   const markdown = await readFile(sourcePath, 'utf8');
   await page.goto('./');
   const expected = await page.evaluate((html) => {
     const doc = new DOMParser().parseFromString(html, 'text/html');
     return [...doc.querySelectorAll('h2, h3, p, li')].map((node) => node.textContent.replace(/\s+/g, ' ').trim());
   }, marked(markdown));
-  const actual = await page.locator('#manifesto-content').evaluate((element) =>
+  const actual = await page.locator('#declaration-content').evaluate((element) =>
     [...element.querySelectorAll('h2, h3, p, li')].map((node) => {
-      // Visible-only decorations (aria-hidden) are not part of the manifesto text.
+      // Visible-only decorations (aria-hidden) are not part of the declaration text.
       const copy = node.cloneNode(true);
       copy.querySelectorAll('[aria-hidden="true"]').forEach((hidden) => hidden.remove());
       return copy.textContent.replace(/\s+/g, ' ').trim();
     }));
   // The layout regroups blocks (quotes first, paired lists), so compare the full set of texts.
   expect([...actual].sort()).toEqual([...expected].sort());
-  const headings = await page.locator('#manifesto-content h2').allTextContents();
+  const headings = await page.locator('#declaration-content h2').allTextContents();
   expect(headings.map((text) => text.trim())).toEqual(marked.lexer(markdown).filter((t) => t.type === 'heading' && t.depth === 2).map((t) => t.text));
-  const download = await request.get('./manifiesto_ingenieria_software_era_ia.md');
+  const download = await request.get('./declaracion_ingenieria_software_era_ia.md');
   expect(await download.text()).toBe(markdown);
   await expect(page.locator('.principle-card')).toHaveCount(12);
   await expect(page.locator('.value-card')).toHaveCount(7);
@@ -199,20 +199,20 @@ for (const theme of ['light', 'dark']) {
 }
 
 test.describe('idioma', () => {
-  const enSourcePath = new URL('../manifesto_software_engineering_ai_era.md', import.meta.url);
+  const enSourcePath = new URL('../declaration_software_engineering_ai_era.md', import.meta.url);
 
-  test('la versión inglesa contiene todo el manifiesto traducido y descarga su original', async ({ page, request }) => {
+  test('la versión inglesa contiene toda la declaración traducida y descarga su original', async ({ page, request }) => {
     const markdown = await readFile(enSourcePath, 'utf8');
-    await page.addInitScript(() => localStorage.setItem('manifiesto-idioma', 'en'));
+    await page.addInitScript(() => localStorage.setItem('declaracion-idioma', 'en'));
     await page.goto('./en/');
     await expect(page.locator('html')).toHaveAttribute('lang', 'en');
     const expected = await page.evaluate((html) => {
       const doc = new DOMParser().parseFromString(html, 'text/html');
       return [...doc.querySelectorAll('h2, h3, p, li')].map((node) => node.textContent.replace(/\s+/g, ' ').trim());
     }, marked(markdown));
-    const actual = await page.locator('#manifesto-content').evaluate((element) =>
+    const actual = await page.locator('#declaration-content').evaluate((element) =>
       [...element.querySelectorAll('h2, h3, p, li')].map((node) => {
-      // Visible-only decorations (aria-hidden) are not part of the manifesto text.
+      // Visible-only decorations (aria-hidden) are not part of the declaration text.
       const copy = node.cloneNode(true);
       copy.querySelectorAll('[aria-hidden="true"]').forEach((hidden) => hidden.remove());
       return copy.textContent.replace(/\s+/g, ' ').trim();
@@ -222,8 +222,8 @@ test.describe('idioma', () => {
     await expect(page.locator('.closing-stances li')).toHaveCount(4);
     await page.getByRole('button', { name: 'Index', exact: true }).click();
     const download = page.getByRole('dialog').getByRole('link', { name: /Download the original document/ });
-    await expect(download).toHaveAttribute('href', '/engineering-with-judgment/manifesto_software_engineering_ai_era.md');
-    expect(await (await request.get('./manifesto_software_engineering_ai_era.md')).text()).toBe(markdown);
+    await expect(download).toHaveAttribute('href', '/engineering-with-judgment/declaration_software_engineering_ai_era.md');
+    expect(await (await request.get('./declaration_software_engineering_ai_era.md')).text()).toBe(markdown);
   });
 
   for (const [locale, expected] of [['es-ES', 'es'], ['en-GB', 'en'], ['fr-FR', 'en']]) {
@@ -255,56 +255,5 @@ test.describe('idioma', () => {
     await expect(page.locator('html')).toHaveAttribute('lang', 'es');
     await page.goto('./en/');
     await expect(page).toHaveURL(/127\.0\.0\.1:4173\/engineering-with-judgment\/$/);
-  });
-});
-
-test.describe('firmas', () => {
-  test('toolbar y portada abren el diálogo de firma accesible con la URL de GitHub', async ({ page }) => {
-    await page.emulateMedia({ reducedMotion: 'reduce' });
-    await page.goto('./');
-    const dialog = page.getByRole('dialog', { name: 'Firmar el manifiesto' });
-    for (const opener of [page.locator('.toolbar [data-open-sign]'), page.locator('.hero [data-open-sign]')]) {
-      await opener.click();
-      await expect(dialog).toBeVisible();
-      await expect(page).not.toHaveURL(/#firmas$/);
-      expect((await new AxeBuilder({ page }).withTags(['wcag2a', 'wcag2aa', 'wcag21aa']).analyze()).violations).toEqual([]);
-      await page.keyboard.press('Escape');
-      await expect(dialog).not.toBeVisible();
-      await expect(opener).toBeFocused();
-    }
-    await page.locator('.hero [data-open-sign]').click();
-    await dialog.getByLabel('Tu usuario de GitHub').fill('@octocat');
-    const link = dialog.getByRole('link', { name: /Continuar en GitHub/ });
-    const url = new URL(await link.getAttribute('href'));
-    expect(url.origin + url.pathname).toBe('https://github.com/KilianJimenez/engineering-with-judgment/new/main/signatures');
-    expect(url.searchParams.get('filename')).toBe('octocat.yml');
-    expect(url.searchParams.get('value')).toMatch(/^github: octocat\nnombre: \nrol: \nfecha: \d{4}-\d{2}-\d{2}\n$/);
-    await expect(link).toHaveAttribute('target', '_blank');
-  });
-
-  test('la sección de firmas muestra contador y avatares en ambos idiomas', async ({ page }) => {
-    await page.goto('./#firmas');
-    const section = page.locator('#firmas');
-    await expect(section.locator('[data-signers-count]')).toHaveText(/^\d+ personas? ha(n)? firmado$/);
-    const first = section.locator('.signer-grid a').first();
-    await expect(first).toHaveAttribute('href', 'https://github.com/KilianJimenez');
-    await expect(first).toHaveAttribute('title', 'Kilian Jiménez · Autor del manifiesto');
-    await section.getByRole('button', { name: 'Firmar el manifiesto' }).click();
-    await expect(page.getByRole('dialog', { name: 'Firmar el manifiesto' })).toBeVisible();
-    await page.keyboard.press('Escape');
-    await page.getByRole('link', { name: 'English' }).click();
-    await expect(page).toHaveURL(/\/en\/#firmas$/);
-    await expect(page.locator('#firmas [data-signers-count]')).toHaveText(/^\d+ (person has|people have) signed$/);
-  });
-
-  test('sin JavaScript los botones de firma llevan a #firmas', async ({ browser }) => {
-    const context = await browser.newContext({ javaScriptEnabled: false });
-    const page = await context.newPage();
-    await page.goto('./');
-    await page.locator('.hero [data-open-sign]').click();
-    await expect(page).toHaveURL(/#firmas$/);
-    await expect(page.locator('#firmas-title')).toBeInViewport();
-    await expect(page.locator('#firmas .sign-cta')).toHaveAttribute('href', /^https:\/\/github\.com\/KilianJimenez\/engineering-with-judgment\/new\/main\/signatures\?filename=tu-usuario\.yml/);
-    await context.close();
   });
 });

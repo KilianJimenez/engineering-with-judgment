@@ -5,12 +5,11 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger';
 gsap.registerPlugin(ScrollTrigger);
 
 const root = document.documentElement;
-const sections = [document.querySelector('#inicio'), ...document.querySelectorAll('#manifesto-content > section'), document.querySelector('#firmas')];
+const sections = [document.querySelector('#inicio'), ...document.querySelectorAll('#declaration-content > section')];
 const progress = document.querySelector('.reading-progress');
 const progressFill = progress.firstElementChild;
 const dialog = document.querySelector('#chapter-index');
-const signDialog = document.querySelector('#sign-dialog');
-const dialogs = [dialog, signDialog];
+const dialogs = [dialog];
 const openIndex = document.querySelector('[data-open-index]');
 const navigationLinks = [...document.querySelectorAll('[data-chapter-link]')];
 const reducedMotionQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
@@ -18,7 +17,7 @@ let lenis;
 let cancelNativeNavigation;
 
 // ---------- Light / dark mode ----------
-const THEME_KEY = 'manifiesto-tema';
+const THEME_KEY = 'declaracion-tema';
 const themeColors = { light: '#f3f5f9', dark: '#10141a' };
 const modeToggle = document.querySelector('[data-mode-toggle]');
 const modeLabel = modeToggle.querySelector('.mode-label');
@@ -100,6 +99,20 @@ updateCarouselButtons();
 const principles = document.querySelector('[data-principles]');
 const principlesTrack = principles.querySelector('.principles-track');
 let principlesTrigger;
+
+// Equalize closed principle cards: min-height = tallest card with every <details> closed.
+const principleCards = [...principles.querySelectorAll('.principle-card')];
+function equalizePrincipleCards() {
+  const opened = principleCards.flatMap((c) => [...c.querySelectorAll('details[open]')]);
+  principleCards.forEach((c) => { c.style.minHeight = ''; });
+  opened.forEach((d) => d.removeAttribute('open'));
+  const h = Math.max(...principleCards.map((c) => c.offsetHeight));
+  opened.forEach((d) => d.setAttribute('open', ''));
+  principleCards.forEach((c) => { c.style.minHeight = `${h}px`; });
+}
+equalizePrincipleCards();
+document.fonts?.ready.then(() => { equalizePrincipleCards(); ScrollTrigger.refresh(); });
+window.addEventListener('resize', equalizePrincipleCards);
 
 const motion = gsap.matchMedia();
 motion.add('(prefers-reduced-motion: no-preference) and (pointer: fine)', () => {
@@ -228,7 +241,7 @@ function navigateTo(target, { updateHistory = true, focus = true } = {}) {
 }
 
 document.addEventListener('click', (event) => {
-  const link = event.target.closest('a[href^="#"]:not([data-open-sign])');
+  const link = event.target.closest('a[href^="#"]');
   if (!link || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey || event.button !== 0) return;
   const target = document.getElementById(decodeURIComponent(link.hash.slice(1)));
   if (!target) return;
@@ -251,55 +264,6 @@ dialogs.forEach((d) => {
   });
 });
 
-// ---------- Sign the manifesto ----------
-// Without JavaScript the sign links lead to #firmas (or straight to GitHub); with it they open the dialog.
-const signInput = signDialog.querySelector('#sign-user');
-const signLink = signDialog.querySelector('[data-sign-link]');
-function updateSignLink() {
-  const value = signInput.value.trim().replace(/^@/, '');
-  const user = /^[a-z\d](?:[a-z\d]|-(?=[a-z\d])){0,38}$/i.test(value) ? value : signDialog.dataset.signPlaceholder;
-  const yaml = `github: ${user}\nnombre: \nrol: \nfecha: ${new Date().toISOString().slice(0, 10)}\n`;
-  signLink.href = `${signDialog.dataset.signNew}?filename=${encodeURIComponent(user)}.yml&value=${encodeURIComponent(yaml)}`;
-}
-signInput.addEventListener('input', updateSignLink);
-signDialog.querySelector('[data-sign-form]').addEventListener('submit', (event) => {
-  event.preventDefault();
-  signLink.click();
-});
-updateSignLink();
-document.querySelectorAll('[data-open-sign]').forEach((link) => {
-  link.setAttribute('role', 'button');
-  link.setAttribute('aria-haspopup', 'dialog');
-  link.setAttribute('aria-controls', 'sign-dialog');
-  link.removeAttribute('target');
-  link.querySelector('.sr-only')?.remove();
-  link.addEventListener('click', (event) => {
-    if (event.metaKey || event.ctrlKey || event.shiftKey || event.altKey || event.button !== 0) return;
-    event.preventDefault();
-    closeDialog();
-    openDialog(signDialog);
-  });
-  link.addEventListener('keydown', (event) => {
-    if (event.key === ' ') {
-      event.preventDefault();
-      link.click();
-    }
-  });
-});
-
-const signersMore = document.querySelector('[data-signers-more]');
-if (signersMore) {
-  const grid = document.querySelector('[data-signers]');
-  grid.classList.add('is-collapsed');
-  signersMore.hidden = false;
-  signersMore.addEventListener('click', () => {
-    grid.classList.remove('is-collapsed');
-    signersMore.remove();
-    grid.querySelector('.is-extra a')?.focus();
-    ScrollTrigger.refresh();
-  });
-}
-
 window.addEventListener('popstate', () => {
   const target = document.getElementById(decodeURIComponent(location.hash.slice(1)) || 'inicio');
   if (target) {
@@ -320,7 +284,7 @@ setCurrent(sections[0]);
 
 // ---------- Language ----------
 // The choice is saved so the pre-paint redirect respects it; the counterpart of the current section is kept.
-const LANG_KEY = 'manifiesto-idioma';
+const LANG_KEY = 'declaracion-idioma';
 const langMap = JSON.parse(document.querySelector('#lang-map').textContent);
 document.querySelectorAll('.lang-switch a[data-lang]').forEach((link) => link.addEventListener('click', (event) => {
   try { localStorage.setItem(LANG_KEY, link.dataset.lang); } catch { /* storage unavailable */ }

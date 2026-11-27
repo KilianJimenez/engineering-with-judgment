@@ -5,15 +5,15 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="theme-color" content="#f3f5f9" />
     <meta name="color-scheme" content="light dark" />
-    <meta name="description" content="Artificial intelligence generates possibilities. Engineering generates guarantees. A manifesto on evidence, human accountability and trustworthy software." />
-    <title>Manifesto for Software Engineering in the Age of Artificial Intelligence</title>
-    <script type="application/json" id="lang-map">{"href":"/engineering-with-judgment/","ids":{"inicio":"inicio","preamble":"preambulo","our-vision":"nuestra-vision","our-values":"nuestros-valores","principles":"principios","engineering-commitments":"compromisos-de-ingenieria","warning-signs":"senales-de-alarma","how-we-will-recognize-healthy-engineering":"como-reconoceremos-una-ingenieria-saludable","final-declaration":"declaracion-final","firmas":"firmas","1-accountability-cannot-be-delegated":"1-la-responsabilidad-no-se-delega","2-tests-are-a-fundamental-source-of-operational-truth":"2-el-test-es-una-fuente-fundamental-de-verdad-operacional","3-tests-are-contracts-not-targets-to-be-bent":"3-los-tests-son-contratos-no-objetivos-que-deban-doblegarse","4-guardrails-are-part-of-the-goal":"4-los-guardarrailes-forman-parte-del-objetivo","5-validating-is-as-important-as-building":"5-validar-es-tan-importante-como-construir","6-speed-does-not-justify-the-absence-of-evidence":"6-la-velocidad-no-justifica-la-ausencia-de-evidencia","7-every-ai-assisted-system-must-be-observable":"7-todo-sistema-asistido-por-ia-debe-ser-observable","8-we-measure-the-whole-system-not-just-output":"8-medimos-el-sistema-completo-no-solo-la-produccion","9-we-must-detect-divergence-before-damage":"9-debemos-detectar-la-divergencia-antes-que-el-dano","10-every-ai-generated-result-is-a-hypothesis-until-it-is-validated":"10-todo-resultado-generado-por-ia-es-una-hipotesis-hasta-que-se-valida","11-the-independence-of-validation-must-be-preserved":"11-la-independencia-de-la-validacion-debe-preservarse","12-our-governance-must-evolve-with-the-evidence":"12-nuestra-gobernanza-debe-evolucionar-con-la-evidencia"}}</script>
+    <meta name="description" content="Artificial intelligence generates possibilities. Engineering generates guarantees. A declaration on evidence, human accountability and trustworthy software." />
+    <title>Declaration for Software Engineering in the Age of Artificial Intelligence</title>
+    <script type="application/json" id="lang-map">{"href":"/engineering-with-judgment/","ids":{"inicio":"inicio","preamble":"preambulo","our-vision":"nuestra-vision","our-values":"nuestros-valores","principles":"principios","engineering-commitments":"compromisos-de-ingenieria","warning-signs":"senales-de-alarma","how-we-will-recognize-healthy-engineering":"como-reconoceremos-una-ingenieria-saludable","final-declaration":"declaracion-final","1-accountability-cannot-be-delegated":"1-la-responsabilidad-no-se-delega","2-tests-are-a-fundamental-source-of-operational-truth":"2-el-test-es-una-fuente-fundamental-de-verdad-operacional","3-tests-are-contracts-not-targets-to-be-bent":"3-los-tests-son-contratos-no-objetivos-que-deban-doblegarse","4-guardrails-are-part-of-the-goal":"4-los-guardarrailes-forman-parte-del-objetivo","5-validating-is-as-important-as-building":"5-validar-es-tan-importante-como-construir","6-speed-does-not-justify-the-absence-of-evidence":"6-la-velocidad-no-justifica-la-ausencia-de-evidencia","7-every-ai-assisted-system-must-be-observable":"7-todo-sistema-asistido-por-ia-debe-ser-observable","8-we-measure-the-whole-system-not-just-output":"8-medimos-el-sistema-completo-no-solo-la-produccion","9-we-must-detect-divergence-before-damage":"9-debemos-detectar-la-divergencia-antes-que-el-dano","10-every-ai-generated-result-is-a-hypothesis-until-it-is-validated":"10-todo-resultado-generado-por-ia-es-una-hipotesis-hasta-que-se-valida","11-the-independence-of-validation-must-be-preserved":"11-la-independencia-de-la-validacion-debe-preservarse","12-our-governance-must-evolve-with-the-evidence":"12-nuestra-gobernanza-debe-evolucionar-con-la-evidencia"}}</script>
     <script>
       // Picks the language before first paint: saved choice, else browser language (Spanish → es, anything else → en).
       (() => {
         const current = document.documentElement.lang;
         let lang;
-        try { lang = localStorage.getItem('manifiesto-idioma'); } catch { /* storage unavailable */ }
+        try { lang = localStorage.getItem('declaracion-idioma'); } catch { /* storage unavailable */ }
         if (lang !== 'es' && lang !== 'en') lang = /^es\b/i.test((navigator.languages && navigator.languages[0]) || navigator.language || '') ? 'es' : 'en';
         if (lang === current) return;
         const map = JSON.parse(document.getElementById('lang-map').textContent);
@@ -25,7 +25,7 @@
       // Applied before first paint to avoid a flash of the wrong theme.
       (() => {
         let theme;
-        try { theme = localStorage.getItem('manifiesto-tema'); } catch { /* storage unavailable */ }
+        try { theme = localStorage.getItem('declaracion-tema'); } catch { /* storage unavailable */ }
         if (theme !== 'light' && theme !== 'dark') theme = matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
         document.documentElement.dataset.theme = theme;
         document.querySelector('meta[name="theme-color"]').content = theme === 'dark' ? '#10141a' : '#f3f5f9';
@@ -35,12 +35,11 @@
     <link rel="stylesheet" href="/src/style.css" />
   </head>
   <body>
-    <a class="skip-link" href="#preamble">Skip to the manifesto</a>
+    <a class="skip-link" href="#preamble">Skip to the declaration</a>
     <div class="reading-progress" role="progressbar" aria-label="Reading progress" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><span></span></div>
     <div class="toolbar">
       <nav class="lang-switch" aria-label="Language"><a href="/engineering-with-judgment/" hreflang="es" lang="es" data-lang="es"><span aria-hidden="true">ES</span><span class="sr-only">Español</span></a><a href="/engineering-with-judgment/en/" hreflang="en" lang="en" data-lang="en" aria-current="true"><span aria-hidden="true">EN</span><span class="sr-only">English</span></a></nav>
       <button class="toolbar-button index-toggle" type="button" aria-haspopup="dialog" aria-controls="chapter-index" data-open-index hidden>Index <span class="menu-icon" aria-hidden="true"><i></i><i></i></span></button>
-      <a class="toolbar-button sign-toggle" href="#firmas" data-open-sign><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 21h18"/><path d="M14.5 4.5 19.5 9.5 9 20H4v-5L14.5 4.5Z"/></svg><span class="sign-label">Sign</span></a>
       <button class="toolbar-button mode-toggle" type="button" data-mode-toggle hidden aria-label="Switch to dark mode" data-label-dark="Dark" data-label-light="Light" data-aria-dark="Switch to dark mode" data-aria-light="Switch to light mode">
         <svg class="icon icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 13A9 9 0 1 1 11 3a7 7 0 0 0 10 10Z"/></svg>
         <svg class="icon icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>
@@ -49,23 +48,22 @@
     </div>
 
     <main id="contenido">
-      <section id="inicio" class="hero" data-contrast aria-labelledby="manifesto-title">
+      <section id="inicio" class="hero" data-contrast aria-labelledby="declaration-title">
         <div class="hero-inner">
-          <h1 class="hero-kicker" id="manifesto-title">Manifesto for Software Engineering in the Age of Artificial Intelligence</h1>
+          <h1 class="hero-kicker" id="declaration-title">Declaration for Software Engineering in the Age of Artificial Intelligence</h1>
           <p class="hero-heading">AI generates <em>possibilities</em>.<br />Engineering generates <mark>guarantees</mark>.</p>
           <p class="hero-description">It is not about generating more software. It is about building trustworthy software.</p>
-          <a class="hero-sign" href="#firmas" data-open-sign>Sign the manifesto <span aria-hidden="true">→</span></a>
         </div>
-        <nav class="hero-toc" aria-label="Manifesto sections"><a href="#preamble" data-chapter-link="preamble"><span>01</span> Preamble</a><a href="#our-vision" data-chapter-link="our-vision"><span>02</span> Our vision</a><a href="#our-values" data-chapter-link="our-values"><span>03</span> Our values</a><a href="#principles" data-chapter-link="principles"><span>04</span> Principles</a><a href="#engineering-commitments" data-chapter-link="engineering-commitments"><span>05</span> Engineering commitments</a><a href="#warning-signs" data-chapter-link="warning-signs"><span>06</span> Warning signs ↔ Healthy engineering</a><a href="#final-declaration" data-chapter-link="final-declaration"><span>07</span> Final declaration</a></nav>
+        <nav class="hero-toc" aria-label="Declaration sections"><a href="#preamble" data-chapter-link="preamble"><span>01</span> Preamble</a><a href="#our-vision" data-chapter-link="our-vision"><span>02</span> Our vision</a><a href="#our-values" data-chapter-link="our-values"><span>03</span> Our values</a><a href="#principles" data-chapter-link="principles"><span>04</span> Principles</a><a href="#engineering-commitments" data-chapter-link="engineering-commitments"><span>05</span> Engineering commitments</a><a href="#warning-signs" data-chapter-link="warning-signs"><span>06</span> Warning signs ↔ Healthy engineering</a><a href="#final-declaration" data-chapter-link="final-declaration"><span>07</span> Final declaration</a></nav>
       </section>
-      <div id="manifesto-content"><section class="section preamble" id="preamble" aria-labelledby="preamble-title">
+      <div id="declaration-content"><section class="section preamble" id="preamble" aria-labelledby="preamble-title">
     <header class="section-head"><span class="section-tag">01</span><h2 id="preamble-title" tabindex="-1">Preamble</h2></header>
     <div class="preamble-layout">
       <div class="prose-columns"><p>Artificial intelligence has transformed software engineering. In a very short time, the capability of models and agents has grown, their cost has fallen and their use has spread to every level of our profession. Today we can produce code, documentation, designs and technical decisions at a speed that barely a year ago seemed out of reach.</p>
 <p>This capability opens an extraordinary opportunity. We must use artificial intelligence, innovate with it and build new ways of working. But we must do so by building on the foundations that software engineering has developed over decades, not by replacing them.</p>
 <p><strong>The ability to generate software is growing faster than our ability to understand, validate and govern it</strong>. The pressure to innovate, reach the market first and outperform our competitors pushes us to produce and integrate changes ever more quickly. In that process we run the risk of trusting results we have not reviewed, deploying code we do not understand and accepting as true artifacts produced by probabilistic systems.</p>
 <p>The problem is not artificial intelligence. The problem arises when we delegate to it responsibilities that still belong to engineering professionals.</p>
-<p>This manifesto exists to preserve and strengthen those responsibilities. It does not seek to slow innovation, but to give it foundations. It does not reject speed, but speed without control. It does not distrust the tool on principle, but any result that is not backed by evidence.</p>
+<p>This declaration exists to preserve and strengthen those responsibilities. It does not seek to slow innovation, but to give it foundations. It does not reject speed, but speed without control. It does not distrust the tool on principle, but any result that is not backed by evidence.</p>
 </div>
       <aside class="pull-quote" aria-label="Highlighted quote"><blockquote>
 <p><strong>Artificial intelligence generates possibilities. Engineering generates guarantees.</strong></p>
@@ -81,37 +79,37 @@
     <header class="section-head"><span class="section-tag">03</span><h2 id="our-values-title" tabindex="-1">Our values</h2><div class="carousel-nav"><button type="button" class="carousel-button" data-carousel-dir="-1" aria-label="Previous value" aria-controls="values-track"><span aria-hidden="true">←</span></button><button type="button" class="carousel-button" data-carousel-dir="1" aria-label="Next value" aria-controls="values-track"><span aria-hidden="true">→</span></button></div></header>
     <div class="values-track" id="values-track" role="region" aria-label="Values. Horizontal scrolling" tabindex="0"><article class="value-card" aria-labelledby="valor-1">
         <span class="icon-box"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7S2 12 2 12Z"/><circle cx="12" cy="12" r="3"/></svg></span>
-        <h3 class="versus" id="valor-1"><strong>Evidence</strong> <span class="versus-label"><span class="sr-only">over</span><span aria-hidden="true">over</span></span> <s>apparent confidence</s></h3>
+        <h3 class="versus" id="valor-1"><strong>Evidence</strong> <span class="versus-label"><span class="sr-only">over</span><span aria-hidden="true">over</span></span> <em>apparent confidence</em></h3>
         <p>The coherence of an answer does not prove its truthfulness. The apparent quality of an artifact does not prove its correctness. We accept results because there is evidence that supports them, not because they have been presented convincingly.</p>
 
       </article><article class="value-card" aria-labelledby="valor-2">
         <span class="icon-box"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 3.6-7 8-7s8 3 8 7"/></svg></span>
-        <h3 class="versus" id="valor-2"><strong>Human accountability</strong> <span class="versus-label"><span class="sr-only">over</span><span aria-hidden="true">over</span></span> <s>artificial autonomy</s></h3>
+        <h3 class="versus" id="valor-2"><strong>Human accountability</strong> <span class="versus-label"><span class="sr-only">over</span><span aria-hidden="true">over</span></span> <em>artificial autonomy</em></h3>
         <p>Artificial intelligence can propose, implement and assist. Final accountability for what is built, integrated and deployed belongs to the people and organizations that choose to use it.</p>
 
       </article><article class="value-card" aria-labelledby="valor-3">
         <span class="icon-box"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 3a3 3 0 0 0-3 3 3 3 0 0 0-2 5 3 3 0 0 0 2 5 3 3 0 0 0 3 3h1V3H9Zm6 0a3 3 0 0 1 3 3 3 3 0 0 1 2 5 3 3 0 0 1-2 5 3 3 0 0 1-3 3h-1V3h1Z"/></svg></span>
-        <h3 class="versus" id="valor-3"><strong>Understanding</strong> <span class="versus-label"><span class="sr-only">over</span><span aria-hidden="true">over</span></span> <s>thoughtless production</s></h3>
+        <h3 class="versus" id="valor-3"><strong>Understanding</strong> <span class="versus-label"><span class="sr-only">over</span><span aria-hidden="true">over</span></span> <em>thoughtless production</em></h3>
         <p>We do not integrate what we cannot sufficiently explain. The ability to produce more code does not remove the need to understand its purpose, its effects, its limits and its risks.</p>
 
       </article><article class="value-card" aria-labelledby="valor-4">
         <span class="icon-box"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 12.5 9 17.5 20 6.5"/></svg></span>
-        <h3 class="versus" id="valor-4"><strong>Validation</strong> <span class="versus-label"><span class="sr-only">over</span><span aria-hidden="true">over</span></span> <s>uncontrolled speed</s></h3>
+        <h3 class="versus" id="valor-4"><strong>Validation</strong> <span class="versus-label"><span class="sr-only">over</span><span aria-hidden="true">over</span></span> <em>uncontrolled speed</em></h3>
         <p>Delivering sooner only has value when what we deliver fulfills its purpose. Competitive pressure may explain a decision, but it can never justify the absence of validation.</p>
 
       </article><article class="value-card" aria-labelledby="valor-5">
         <span class="icon-box"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 2 4 5v6c0 5 3.4 9.4 8 11 4.6-1.6 8-6 8-11V5l-8-3Z"/><path d="m9 12 2 2 4-4"/></svg></span>
-        <h3 class="versus" id="valor-5"><strong>Discipline</strong> <span class="versus-label"><span class="sr-only">over</span><span aria-hidden="true">over</span></span> <s>convenience</s></h3>
+        <h3 class="versus" id="valor-5"><strong>Discipline</strong> <span class="versus-label"><span class="sr-only">over</span><span aria-hidden="true">over</span></span> <em>convenience</em></h3>
         <p>Standards, controls and guardrails are not obstacles to be removed in order to complete a task. They are necessary conditions for the result to be trustworthy.</p>
 
       </article><article class="value-card" aria-labelledby="valor-6">
         <span class="icon-box"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><path d="M12 12 19 5"/></svg></span>
-        <h3 class="versus" id="valor-6"><strong>Observability</strong> <span class="versus-label"><span class="sr-only">over</span><span aria-hidden="true">over</span></span> <s>opacity</s></h3>
+        <h3 class="versus" id="valor-6"><strong>Observability</strong> <span class="versus-label"><span class="sr-only">over</span><span aria-hidden="true">over</span></span> <em>opacity</em></h3>
         <p>We cannot govern what we cannot observe. Every system assisted by artificial intelligence must let us know what it did, what it produced, what it changed and when it drifted from our intent.</p>
 
       </article><article class="value-card" aria-labelledby="valor-7">
         <span class="icon-box"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 21v-9"/><path d="M12 12C12 7 8 4 3 4c0 5 4 8 9 8Zm0 0c0-4 3-7 9-7 0 5-4 7-9 7Z"/></svg></span>
-        <h3 class="versus" id="valor-7"><strong>Learning</strong> <span class="versus-label"><span class="sr-only">over</span><span aria-hidden="true">over</span></span> <s>false maturity</s></h3>
+        <h3 class="versus" id="valor-7"><strong>Learning</strong> <span class="versus-label"><span class="sr-only">over</span><span aria-hidden="true">over</span></span> <em>false maturity</em></h3>
         <p>We are still learning to integrate and govern artificial intelligence. We act with humility, measure our results and revise our practices based on evidence.</p>
 
       </article></div>
@@ -216,7 +214,10 @@
           <span class="principle-number" data-number="08" aria-hidden="true"></span>
           <svg class="icon icon-mid" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/></svg>
           <h3 id="8-we-measure-the-whole-system-not-just-output-title"><span class="sr-only">8. </span>We measure the whole system, not just output</h3>
-          
+          <blockquote>
+<p><strong>What we do not measure as a whole, we misread.</strong></p>
+</blockquote>
+
           <p>Lines of code, the number of pull requests or the time it takes to generate a solution are not enough to assess the value of artificial intelligence.</p>
 
           
@@ -265,7 +266,10 @@
           <span class="principle-number" data-number="11" aria-hidden="true"></span>
           <svg class="icon icon-mid" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 3v6a6 6 0 0 0 6 6h0a6 6 0 0 1 6 6M18 3v6a6 6 0 0 1-6 6"/></svg>
           <h3 id="11-the-independence-of-validation-must-be-preserved-title"><span class="sr-only">11. </span>The independence of validation must be preserved</h3>
-          
+          <blockquote>
+<p><strong>Whoever proposes must not be the one who approves.</strong></p>
+</blockquote>
+
           <p>Whoever produces a solution must not control, without oversight, the mechanisms that determine its acceptance. This principle, known for decades in critical systems, becomes even more important when an agent can simultaneously modify implementation, tests, configuration and documentation.</p>
 
           
@@ -275,7 +279,10 @@
           <span class="principle-number" data-number="12" aria-hidden="true"></span>
           <svg class="icon icon-mid" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M17 2l4 4-4 4"/><path d="M3 12V10a4 4 0 0 1 4-4h14M7 22l-4-4 4-4"/><path d="M21 12v2a4 4 0 0 1-4 4H3"/></svg>
           <h3 id="12-our-governance-must-evolve-with-the-evidence-title"><span class="sr-only">12. </span>Our governance must evolve with the evidence</h3>
-          
+          <blockquote>
+<p><strong>Trust is earned with data and can be revoked.</strong></p>
+</blockquote>
+
           <p>We are at an early stage. No organization should assume it has already definitively solved the integration of artificial intelligence into software engineering.</p>
 
           
@@ -317,22 +324,10 @@
 <p><strong>In the age of mass software generation, trust is the most important product of engineering.</strong></p>
 </blockquote>
 </div></div>
-      <section class="section signers" id="firmas" aria-labelledby="firmas-title">
-    <header class="section-head"><span class="section-tag">08</span><h2 id="firmas-title" tabindex="-1">Signatures</h2><p class="signers-count" data-signers-count><b>1</b> person has signed</p></header>
-    <p class="lede">Those who commit to building trustworthy software.</p>
-    <ul class="signer-grid" data-signers><li><a href="https://github.com/KilianJimenez" title="Kilian Jiménez · Autor del manifiesto" target="_blank" rel="noopener noreferrer"><img src="/avatars/kilianjimenez.png" alt="" width="64" height="64" loading="lazy" decoding="async" /><span class="sr-only">Kilian Jiménez · Autor del manifiesto (opens in a new tab)</span></a></li></ul>
-    
-    <div class="signers-how">
-      <h3>How to sign</h3>
-      <ol class="sign-steps"><li>Enter your GitHub username (optional: you can also type it later).</li><li>GitHub opens the editor with the file <code>signatures/&lt;username&gt;.yml</code> already filled in. You can add your name and role.</li><li>Click “Propose changes” and then “Create pull request”. An Action validates the signature, merges it and republishes this site.</li></ol>
-      <p class="sign-public">Your signature is public: your username, avatar and any details you add will appear on this page and in the repository.</p>
-      <a class="sign-cta" href="https://github.com/KilianJimenez/engineering-with-judgment/new/main/signatures?filename=your-username.yml&amp;value=github%3A%20your-username%0Anombre%3A%20%0Arol%3A%20%0Afecha%3A%202026-11-25%0A" target="_blank" rel="noopener noreferrer" data-open-sign>Sign the manifesto <span aria-hidden="true">→</span><span class="sr-only"> (opens in a new tab)</span></a>
-    </div>
-  </section>
     </main>
 
     <dialog id="chapter-index" aria-labelledby="index-title" data-lenis-prevent>
-      <div class="index-header"><span class="index-eyebrow">The manifesto</span><button class="close-index" type="button" aria-label="Close index">Close <span aria-hidden="true">×</span></button></div>
+      <div class="index-header"><span class="index-eyebrow">The declaration</span><button class="close-index" type="button" aria-label="Close index">Close <span aria-hidden="true">×</span></button></div>
       <h2 id="index-title">Index</h2>
       <nav class="index-links" aria-label="Section index"><a href="#preamble" data-chapter-link="preamble"><span class="index-number">01</span><span>Preamble</span><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M7 17 17 7M7 7h10v10" stroke="currentColor" stroke-width="1.5"/></svg></a>
 <a href="#our-vision" data-chapter-link="our-vision"><span class="index-number">02</span><span>Our vision</span><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M7 17 17 7M7 7h10v10" stroke="currentColor" stroke-width="1.5"/></svg></a>
@@ -341,20 +336,7 @@
 <a href="#engineering-commitments" data-chapter-link="engineering-commitments"><span class="index-number">05</span><span>Engineering commitments</span><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M7 17 17 7M7 7h10v10" stroke="currentColor" stroke-width="1.5"/></svg></a>
 <a href="#warning-signs" data-chapter-link="warning-signs"><span class="index-number">06</span><span>Warning signs ↔ Healthy engineering</span><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M7 17 17 7M7 7h10v10" stroke="currentColor" stroke-width="1.5"/></svg></a>
 <a href="#final-declaration" data-chapter-link="final-declaration"><span class="index-number">07</span><span>Final declaration</span><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M7 17 17 7M7 7h10v10" stroke="currentColor" stroke-width="1.5"/></svg></a></nav>
-      <a class="index-download" href="/engineering-with-judgment/manifesto_software_engineering_ai_era.md" download data-download>Download the original document <span aria-hidden="true">↓</span></a>
-    </dialog>
-    <dialog id="sign-dialog" aria-labelledby="sign-title" data-lenis-prevent data-sign-new="https://github.com/KilianJimenez/engineering-with-judgment/new/main/signatures" data-sign-placeholder="your-username">
-      <div class="index-header"><span class="index-eyebrow">Endorsement</span><button class="close-index close-sign" type="button" aria-label="Close signing dialog">Close <span aria-hidden="true">×</span></button></div>
-      <h2 id="sign-title">Sign the manifesto</h2>
-      <p>Signing means you commit to applying these principles in your work and to standing up for evidence, not speed, as what decides what reaches production.</p>
-      <ol class="sign-steps"><li>Enter your GitHub username (optional: you can also type it later).</li><li>GitHub opens the editor with the file <code>signatures/&lt;username&gt;.yml</code> already filled in. You can add your name and role.</li><li>Click “Propose changes” and then “Create pull request”. An Action validates the signature, merges it and republishes this site.</li></ol>
-      <form class="sign-form" method="dialog" data-sign-form>
-        <label for="sign-user">Your GitHub username</label>
-        <input id="sign-user" name="github" type="text" autocomplete="username" autocapitalize="off" spellcheck="false" maxlength="39" pattern="[A-Za-z0-9\-]{1,39}" placeholder="your-username" aria-describedby="sign-user-hint" />
-        <small id="sign-user-hint">Optional. Fills in the file name and the “github” field.</small>
-      </form>
-      <p class="sign-public">Your signature is public: your username, avatar and any details you add will appear on this page and in the repository.</p>
-      <a class="sign-cta" href="https://github.com/KilianJimenez/engineering-with-judgment/new/main/signatures?filename=your-username.yml&amp;value=github%3A%20your-username%0Anombre%3A%20%0Arol%3A%20%0Afecha%3A%202026-11-25%0A" target="_blank" rel="noopener noreferrer" data-sign-link>Continue on GitHub <span aria-hidden="true">→</span><span class="sr-only"> (opens in a new tab)</span></a>
+      <a class="index-download" href="/engineering-with-judgment/declaration_software_engineering_ai_era.md" download data-download>Download the original document <span aria-hidden="true">↓</span></a>
     </dialog>
     <script type="module" src="/src/main.js"></script>
   </body>
