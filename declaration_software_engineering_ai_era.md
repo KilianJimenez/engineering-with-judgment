@@ -1,4 +1,4 @@
-# Manifesto for Software Engineering in the Age of Artificial Intelligence
+# Declaration for Software Engineering in the Age of Artificial Intelligence
 
 ## Preamble
 
@@ -10,7 +10,7 @@ This capability opens an extraordinary opportunity. We must use artificial intel
 
 The problem is not artificial intelligence. The problem arises when we delegate to it responsibilities that still belong to engineering professionals.
 
-This manifesto exists to preserve and strengthen those responsibilities. It does not seek to slow innovation, but to give it foundations. It does not reject speed, but speed without control. It does not distrust the tool on principle, but any result that is not backed by evidence.
+This declaration exists to preserve and strengthen those responsibilities. It does not seek to slow innovation, but to give it foundations. It does not reject speed, but speed without control. It does not distrust the tool on principle, but any result that is not backed by evidence.
 
 > **Artificial intelligence generates possibilities. Engineering generates guarantees.**
 
@@ -122,6 +122,8 @@ Traceability must be proportionate to impact. The greater an agent's autonomy, s
 
 ### 8. We measure the whole system, not just output
 
+> **What we do not measure as a whole, we misread.**
+
 Lines of code, the number of pull requests or the time it takes to generate a solution are not enough to assess the value of artificial intelligence.
 
 We must jointly measure:
@@ -158,11 +160,15 @@ A single answer from a model can be useful as a starting point. It must never be
 
 ### 11. The independence of validation must be preserved
 
+> **Whoever proposes must not be the one who approves.**
+
 Whoever produces a solution must not control, without oversight, the mechanisms that determine its acceptance. This principle, known for decades in critical systems, becomes even more important when an agent can simultaneously modify implementation, tests, configuration and documentation.
 
 To the extent the risk allows, we will separate generation from evaluation; proposal from approval; and execution from authorization. When complete separation is not possible, we will apply compensating controls, human review and reinforced traceability.
 
 ### 12. Our governance must evolve with the evidence
+
+> **Trust is earned with data and can be revoked.**
 
 We are at an early stage. No organization should assume it has already definitively solved the integration of artificial intelligence into software engineering.
 
