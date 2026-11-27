@@ -1,4 +1,4 @@
-# Manifiesto de Ingeniería de Software en la Era de la Inteligencia Artificial
+# Declaración de Ingeniería de Software en la Era de la Inteligencia Artificial
 
 ## Preámbulo
 
@@ -10,7 +10,7 @@ Esta capacidad abre una oportunidad extraordinaria. Debemos utilizar la intelige
 
 El problema no es la inteligencia artificial. El problema aparece cuando delegamos en ella responsabilidades que siguen perteneciendo a los profesionales de la ingeniería.
 
-Este manifiesto nace para preservar y reforzar esas responsabilidades. No pretende frenar la innovación, sino darle fundamentos. No rechaza la velocidad, sino la velocidad sin control. No desconfía de la herramienta por principio, sino de cualquier resultado que no venga acompañado de evidencia.
+Esta declaración nace para preservar y reforzar esas responsabilidades. No pretende frenar la innovación, sino darle fundamentos. No rechaza la velocidad, sino la velocidad sin control. No desconfía de la herramienta por principio, sino de cualquier resultado que no venga acompañado de evidencia.
 
 > **La inteligencia artificial genera posibilidades. La ingeniería genera garantías.**
 
@@ -122,6 +122,8 @@ La trazabilidad debe ser proporcional al impacto. Cuanto mayor sea la autonomía
 
 ### 8. Medimos el sistema completo, no solo la producción
 
+> **Lo que no medimos en conjunto, lo malinterpretamos.**
+
 Las líneas de código, el número de pull requests o el tiempo hasta generar una solución no bastan para evaluar el valor de la inteligencia artificial.
 
 Debemos medir conjuntamente:
@@ -158,11 +160,15 @@ Una única respuesta de un modelo puede ser útil como punto de partida. Nunca d
 
 ### 11. La independencia de la validación debe preservarse
 
+> **Quien propone no debe ser quien aprueba.**
+
 Quien produce una solución no debe controlar sin supervisión los mecanismos que determinan su aceptación. Este principio, conocido desde hace décadas en sistemas críticos, adquiere una importancia mayor cuando un agente puede modificar simultáneamente implementación, pruebas, configuración y documentación.
 
 Separaremos, en la medida que permita el riesgo, la generación de la evaluación; la propuesta de la aprobación; y la ejecución de la autorización. Cuando no sea posible una separación completa, aplicaremos controles compensatorios, revisión humana y trazabilidad reforzada.
 
 ### 12. Nuestra gobernanza debe evolucionar con la evidencia
+
+> **La confianza se gana con datos y puede revocarse.**
 
 Estamos en una etapa temprana. Ninguna organización debe asumir que ya ha resuelto de forma definitiva la integración de la inteligencia artificial en la ingeniería de software.
 
